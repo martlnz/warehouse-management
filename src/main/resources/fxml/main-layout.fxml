@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.team.warehouse.warehousemanagementoop.controller.MainLayoutController"
+            prefWidth="1100" prefHeight="700">
+    <left>
+        <VBox spacing="6" prefWidth="180">
+            <padding><Insets top="16" right="8" bottom="16" left="8"/></padding>
+
+            <Label text="QUẢN LÝ KHO" style="-fx-font-weight: bold;"/>
+            <Separator/>
+
+            <Button text="Dashboard" onAction="#onDashboardMenuClick" maxWidth="Infinity"/>
+            <Button text="Sản phẩm" onAction="#onProductMenuClick" maxWidth="Infinity"/>
+            <Button text="Danh mục" onAction="#onCategoryMenuClick" maxWidth="Infinity"/>
+            <Button text="Nhà cung cấp" onAction="#onSupplierMenuClick" maxWidth="Infinity"/>
+            <Button text="Khách hàng" onAction="#onCustomerMenuClick" maxWidth="Infinity"/>
+            <Button text="Nhập kho" onAction="#onImportMenuClick" maxWidth="Infinity"/>
+            <Button text="Xuất kho" onAction="#onExportMenuClick" maxWidth="Infinity"/>
+            <Button text="Người dùng" onAction="#onUserMenuClick" maxWidth="Infinity"/>
+
+            <Separator/>
+            <Button text="Đăng xuất" onAction="#onLogoutClick" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+    <center>
+        <AnchorPane fx:id="contentArea"/>
+    </center>
+</BorderPane>

@@ -1,0 +1,989 @@
+/* ==========================================================================
+   app.css — Giao diện tổng thể · Hệ thống quản lý kho (JavaFX)
+   Vị trí: src/main/resources/css/app.css   (file dùng chung — chỉ Leader sửa)
+
+   CÁCH HOẠT ĐỘNG
+   1. Phần "control mặc định" (Button, TextField, TableView, ComboBox...) tự áp
+      dụng cho toàn app — không cần sửa FXML.
+   2. Phần "style class tự đặt" (sidebar, nav-button, card, page-title...) cần
+      gắn trong SceneBuilder: Properties → JavaFX CSS → Style Class.
+
+   HƯỚNG THIẾT KẾ
+   Xanh petrol (màu thùng container) làm màu chính, vàng cảnh báo kho làm điểm
+   nhấn. Vàng chỉ xuất hiện ở nơi cần chú ý: mục menu đang chọn, cảnh báo tồn
+   kho thấp. Mặt phẳng phẳng, viền mảnh; đổ bóng chỉ dành cho lớp nổi
+   (popup, dialog, thẻ đăng nhập).
+   ========================================================================== */
+
+
+/* ==========================================================================
+   0. BẢNG MÀU & BIẾN GỐC — muốn đổi tông màu cả app, chỉ sửa khối này
+   ========================================================================== */
+.root {
+    -c-ink:           #12262D;   /* nền sidebar */
+    -c-ink-hover:     #1B3540;
+    -c-ink-active:    #24444F;
+    -c-ink-text:      #B4C5CB;   /* chữ mờ trên nền sidebar */
+
+    -c-primary:       #0E6B7B;   /* nút chính, viền focus, mục được chọn */
+    -c-primary-dark:  #0A5563;
+    -c-primary-tint:  #DCEEF1;   /* nền dòng được chọn */
+    -c-accent:        #F4A300;   /* vàng cảnh báo — dùng tiết chế */
+
+    -c-bg:            #EDF1F2;   /* nền vùng nội dung */
+    -c-surface:       #FFFFFF;   /* nền thẻ, bảng, ô nhập */
+    -c-line:          #D6DEE1;   /* viền thẻ / bảng */
+    -c-line-soft:     #E6ECEE;   /* đường kẻ giữa các dòng */
+    -c-control-line:  #C4CFD3;   /* viền ô nhập, nút */
+    -c-hover:         #EEF5F7;
+
+    -c-text:          #16262B;
+    -c-muted:         #5E6F76;
+    -c-placeholder:   #8A9AA1;
+
+    -c-danger:        #C0392B;
+    -c-danger-tint:   #FBE4E1;
+    -c-success:       #1F6B41;
+    -c-success-tint:  #DFF1E6;
+    -c-warning:       #7A5000;
+    -c-warning-tint:  #FFF0C7;
+
+    /* Màu biểu đồ: series 1 = petrol (nhập), series 2 = vàng (xuất) */
+    -c-chart-1: #0E6B7B;
+    -c-chart-2: #F4A300;
+    -c-chart-3: #6C8EA0;
+    -c-chart-4: #7FBFC9;
+    -c-chart-5: #B5533C;
+    -c-chart-6: #5F9E6E;
+
+    /* Ghi đè biến của theme Modena để popup, menu, dialog... đổi theo */
+    -fx-base: #E4EAEC;
+    -fx-accent: -c-primary;
+    -fx-focus-color: -c-primary;
+    -fx-faint-focus-color: rgba(14, 107, 123, 0.20);
+    -fx-control-inner-background: -c-surface;
+    -fx-control-inner-background-alt: -c-surface;
+    -fx-selection-bar: -c-primary-tint;
+    -fx-selection-bar-non-focused: -c-primary-tint;
+    -fx-selection-bar-text: -c-text;
+    -fx-text-base-color: -c-text;
+    -fx-dark-text-color: -c-text;
+
+    /* Font: Segoe UI có sẵn trên Windows, hiển thị tiếng Việt rất tốt.
+       Máy không có font này sẽ tự dùng font hệ thống. */
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-background-color: -c-bg;
+}
+
+.label {
+    -fx-text-fill: -c-text;
+}
+.text-muted {
+    -fx-text-fill: -c-muted;
+}
+
+
+/* ==========================================================================
+   1. NÚT BẤM
+   Mặc định = nút phụ (nền trắng, viền mảnh). Nút hành động chính gắn thêm
+   "btn-primary" (hoặc bật Default Button trong SceneBuilder — tự thành nút chính).
+   ========================================================================== */
+.button {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 6;
+    -fx-border-color: -c-control-line;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-text-fill: -c-text;
+    -fx-padding: 7 16;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: #F2F6F7;
+    -fx-border-color: #A9B9BF;
+}
+.button:armed {
+    -fx-background-color: #E4EBED;
+}
+.button:focused {
+    -fx-border-color: -c-primary;
+}
+.button:disabled {
+    -fx-opacity: 0.45;
+}
+
+/* Nút chính: Lưu, Thêm mới, Đăng nhập, Xác nhận phiếu */
+.button.btn-primary,
+.button:default {
+    -fx-background-color: -c-primary;
+    -fx-border-color: -c-primary;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.button.btn-primary:hover,
+.button:default:hover {
+    -fx-background-color: -c-primary-dark;
+    -fx-border-color: -c-primary-dark;
+}
+.button.btn-primary:armed,
+.button:default:armed {
+    -fx-background-color: #084553;
+    -fx-border-color: #084553;
+}
+.button.btn-primary:focused,
+.button:default:focused {
+    -fx-border-color: -c-ink;
+}
+
+/* Nút nguy hiểm: Xóa, Khóa tài khoản (viền đỏ nhạt, hover mới đổ đỏ) */
+.button.btn-danger {
+    -fx-text-fill: -c-danger;
+    -fx-border-color: #E2B7B1;
+}
+.button.btn-danger:hover {
+    -fx-background-color: -c-danger;
+    -fx-border-color: -c-danger;
+    -fx-text-fill: white;
+}
+.button.btn-danger:armed {
+    -fx-background-color: #A02F23;
+    -fx-border-color: #A02F23;
+}
+
+/* Nút chỉ có chữ: Hủy, Xem chi tiết */
+.button.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: -c-primary;
+}
+.button.btn-ghost:hover {
+    -fx-background-color: -c-primary-tint;
+    -fx-border-color: transparent;
+}
+
+/* Nút nhỏ: dùng trong ô của bảng (Sửa / Xóa từng dòng) */
+.button.btn-sm {
+    -fx-padding: 4 10;
+    -fx-font-size: 12px;
+}
+
+
+/* ==========================================================================
+   2. Ô NHẬP LIỆU
+   Trạng thái lỗi validate: thêm style class "invalid" từ Controller
+   (field.getStyleClass().add("invalid")) và hiện thông báo bằng Label "error-text".
+   ========================================================================== */
+.text-input {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 6;
+    -fx-border-color: -c-control-line;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-padding: 8 12;
+    -fx-text-fill: -c-text;
+    -fx-prompt-text-fill: -c-placeholder;
+}
+.text-input:focused {
+    -fx-background-color: rgba(14, 107, 123, 0.20), -c-surface;
+    -fx-background-insets: -3, 0;
+    -fx-background-radius: 9, 6;
+    -fx-border-color: -c-primary;
+}
+.text-input:disabled {
+    -fx-background-color: #F1F4F5;
+    -fx-opacity: 0.7;
+}
+.text-input.invalid {
+    -fx-border-color: -c-danger;
+}
+.text-input.invalid:focused {
+    -fx-background-color: rgba(192, 57, 43, 0.18), -c-surface;
+}
+
+.text-area {
+    -fx-padding: 0;
+}
+.text-area .content {
+    -fx-padding: 8 12;
+    -fx-background-color: transparent;
+}
+.text-area > .scroll-pane,
+.text-area > .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.error-text {
+    -fx-text-fill: -c-danger;
+    -fx-font-size: 12px;
+}
+.form-label {
+    -fx-font-weight: bold;
+}
+.form-grid {
+    -fx-hgap: 16;
+    -fx-vgap: 14;
+}
+
+/* --- ComboBox / DatePicker --- */
+.combo-box-base {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 6;
+    -fx-border-color: -c-control-line;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+}
+.combo-box-base:hover {
+    -fx-border-color: #A9B9BF;
+}
+.combo-box-base:focused,
+.combo-box-base:showing {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-border-color: -c-primary;
+}
+.combo-box-base.invalid {
+    -fx-border-color: -c-danger;
+}
+.combo-box-base > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0 12 0 6;
+}
+.combo-box-base > .arrow-button > .arrow {
+    -fx-background-color: -c-muted;
+}
+.combo-box > .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8 0 8 12;
+}
+/* Ô nhập bên trong DatePicker: bỏ viền để không bị viền đôi */
+.combo-box-base > .text-field,
+.combo-box-base > .text-field:focused {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 8 0 8 12;
+}
+
+/* Danh sách xổ xuống + mọi ListView */
+.combo-box-popup > .list-view {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-color: -c-line;
+    -fx-border-radius: 8;
+    -fx-padding: 4;
+    -fx-effect: dropshadow(gaussian, rgba(18, 38, 45, 0.18), 14, 0, 0, 4);
+}
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-background-radius: 4;
+    -fx-padding: 7 10;
+    -fx-text-fill: -c-text;
+}
+.list-view .list-cell:filled:hover {
+    -fx-background-color: -c-hover;
+}
+.list-view .list-cell:filled:selected,
+.list-view .list-cell:filled:selected:hover {
+    -fx-background-color: -c-primary-tint;
+    -fx-text-fill: -c-text;
+}
+
+.date-picker-popup {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-color: -c-line;
+    -fx-border-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(18, 38, 45, 0.18), 14, 0, 0, 4);
+}
+.date-picker-popup .day-cell:hover {
+    -fx-background-color: -c-hover;
+}
+.date-picker-popup .day-cell:selected {
+    -fx-background-color: -c-primary;
+    -fx-text-fill: white;
+}
+
+/* --- CheckBox --- */
+.check-box {
+    -fx-text-fill: -c-text;
+}
+.check-box > .box {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4;
+    -fx-border-color: #9FB0B6;
+    -fx-border-radius: 4;
+    -fx-padding: 3;
+}
+.check-box:hover > .box {
+    -fx-border-color: -c-primary;
+}
+.check-box:selected > .box {
+    -fx-background-color: -c-primary;
+    -fx-border-color: -c-primary;
+}
+.check-box:selected > .box > .mark {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+
+
+/* --- ChoiceBox --- */
+.choice-box {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 6;
+    -fx-border-color: -c-control-line;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+.choice-box:hover {
+    -fx-border-color: #A9B9BF;
+}
+.choice-box:focused,
+.choice-box:showing {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-border-color: -c-primary;
+}
+.choice-box > .label {
+    -fx-padding: 8 0 8 12;
+}
+.choice-box > .open-button {
+    -fx-padding: 0 12 0 6;
+}
+.choice-box > .open-button > .arrow {
+    -fx-background-color: -c-muted;
+}
+
+/* --- Spinner (viền nằm ở khung ngoài, ô nhập bên trong không viền) --- */
+.spinner {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 6;
+    -fx-border-color: -c-control-line;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+}
+.spinner:focused {
+    -fx-border-color: -c-primary;
+}
+.spinner > .text-field,
+.spinner > .text-field:focused {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+}
+.spinner > .increment-arrow-button,
+.spinner > .decrement-arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+}
+.spinner > .increment-arrow-button:hover,
+.spinner > .decrement-arrow-button:hover {
+    -fx-background-color: -c-hover;
+}
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
+    -fx-background-color: -c-muted;
+}
+
+/* --- ToggleButton (nút bật/tắt, VD: bộ lọc) --- */
+.toggle-button {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 6;
+    -fx-border-color: -c-control-line;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-text-fill: -c-text;
+    -fx-padding: 7 16;
+    -fx-cursor: hand;
+}
+.toggle-button:hover {
+    -fx-background-color: #F2F6F7;
+    -fx-border-color: #A9B9BF;
+}
+.toggle-button:focused {
+    -fx-border-color: -c-primary;
+}
+.toggle-button:selected {
+    -fx-background-color: -c-primary-tint;
+    -fx-border-color: -c-primary;
+    -fx-text-fill: -c-primary-dark;
+    -fx-font-weight: bold;
+}
+
+/* --- RadioButton --- */
+.radio-button {
+    -fx-text-fill: -c-text;
+}
+.radio-button > .radio {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 20;
+    -fx-border-color: #9FB0B6;
+    -fx-border-radius: 20;
+}
+.radio-button:hover > .radio,
+.radio-button:selected > .radio {
+    -fx-border-color: -c-primary;
+}
+.radio-button > .radio > .dot {
+    -fx-background-color: transparent;
+}
+.radio-button:selected > .radio > .dot {
+    -fx-background-color: -c-primary;
+    -fx-background-insets: 0;
+}
+
+/* --- TabPane (tab gạch chân; VD: Nhà cung cấp | Khách hàng) --- */
+.tab-pane {
+    -fx-tab-min-height: 38;
+}
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent transparent -c-line transparent;
+    -fx-border-width: 0 0 1 0;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-padding: 0 16;
+    -fx-cursor: hand;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-border-color: transparent transparent -c-primary transparent;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab .tab-label {
+    -fx-text-fill: -c-muted;
+    -fx-font-size: 14px;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:hover .tab-label {
+    -fx-text-fill: -c-text;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {
+    -fx-text-fill: -c-primary-dark;
+    -fx-font-weight: bold;
+}
+.tab-pane > .tab-content-area {
+    -fx-background-color: transparent;
+}
+
+/* --- ProgressBar (thanh mảnh, phẳng — dùng khi tải dữ liệu / import) --- */
+.progress-bar > .track {
+    -fx-background-color: -c-line-soft;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4;
+}
+.progress-bar > .bar {
+    -fx-background-color: -c-primary;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4;
+    -fx-padding: 4;
+}
+
+
+/* ==========================================================================
+   3. BẢNG DỮ LIỆU (TableView)
+   Căn phải cột số (Tồn kho, Đơn giá, Thành tiền): thêm style class "col-number"
+   vào TableColumn trong SceneBuilder. Cột giữa: "col-center".
+   ========================================================================== */
+.table-view {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-color: -c-line;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-padding: 1;
+}
+.table-view:focused {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #F3F6F7;
+    -fx-background-radius: 7 7 0 0;
+    -fx-border-color: transparent transparent -c-line transparent;
+    -fx-border-width: 0 0 1 0;
+}
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-size: 40px;
+    -fx-padding: 0;
+}
+.table-view .column-header .label {
+    -fx-text-fill: -c-muted;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 12;
+}
+.table-view .column-header.col-number .label {
+    -fx-alignment: CENTER_RIGHT;
+}
+.table-view .column-header.col-center .label {
+    -fx-alignment: CENTER;
+}
+
+.table-row-cell {
+    -fx-cell-size: 40px;
+    -fx-padding: 0;
+    -fx-background-color: -c-line-soft, -c-surface;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+.table-row-cell:filled:hover {
+    -fx-background-color: -c-line-soft, -c-hover;
+}
+.table-row-cell:filled:selected,
+.table-row-cell:filled:selected:hover {
+    -fx-background-color: -c-line-soft, -c-primary-tint;
+}
+.table-row-cell:empty {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+}
+
+.table-cell {
+    -fx-padding: 0 12;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-color: transparent;
+    -fx-text-fill: -c-text;
+}
+.table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: -c-text;
+}
+.table-cell.col-number {
+    -fx-alignment: CENTER_RIGHT;
+}
+.table-cell.col-center {
+    -fx-alignment: CENTER;
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: -c-muted;
+    -fx-font-size: 14px;
+}
+
+/* Bảng đặt trong .card: bỏ viền ngoài của bảng để không bị viền đôi */
+.card .table-view {
+    -fx-border-color: transparent;
+    -fx-background-radius: 6;
+    -fx-padding: 0;
+}
+.card .table-view .column-header-background {
+    -fx-background-radius: 6;
+}
+
+
+/* ==========================================================================
+   4. THANH CUỘN (mảnh, bo tròn, không có nút mũi tên)
+   ========================================================================== */
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.scroll-bar:vertical {
+    -fx-pref-width: 12;
+}
+.scroll-bar:horizontal {
+    -fx-pref-height: 12;
+}
+.scroll-bar > .track,
+.scroll-bar > .track-background {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+}
+.scroll-bar > .thumb {
+    -fx-background-color: #C5D0D4;
+    -fx-background-insets: 2;
+    -fx-background-radius: 6;
+}
+.scroll-bar > .thumb:hover,
+.scroll-bar > .thumb:pressed {
+    -fx-background-color: #9FB0B6;
+}
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+.scroll-bar > .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+.corner {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+
+/* ==========================================================================
+   5. KHUNG LAYOUT CHÍNH  (main-layout.fxml)
+   BorderPane → left: VBox "sidebar"; center: AnchorPane "content-area"
+   ========================================================================== */
+.sidebar {
+    -fx-background-color: -c-ink;
+}
+.sidebar-title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 24 20 2 20;
+}
+.sidebar-subtitle {
+    -fx-text-fill: -c-ink-text;
+    -fx-font-size: 12px;
+    -fx-padding: 0 20 20 20;
+}
+
+/* Nút menu. Mục đang chọn: thêm class "active" (xem hướng dẫn) — hoặc dùng
+   ToggleButton trong ToggleGroup, lúc đó trạng thái :selected tự áp dụng. */
+.button.nav-button,
+.toggle-button.nav-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 4;
+    -fx-border-radius: 0;
+    -fx-text-fill: -c-ink-text;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 11 20 11 16;
+    -fx-max-width: 9999;
+    -fx-cursor: hand;
+}
+.button.nav-button:hover,
+.toggle-button.nav-button:hover {
+    -fx-background-color: -c-ink-hover;
+    -fx-text-fill: white;
+}
+.button.nav-button:focused,
+.toggle-button.nav-button:focused {
+    -fx-background-color: -c-ink-hover;
+    -fx-border-color: transparent;
+}
+.button.nav-button.active,
+.toggle-button.nav-button:selected {
+    -fx-background-color: -c-ink-active;
+    -fx-border-color: transparent transparent transparent -c-accent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.sidebar-user {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 0 20 0 20;
+}
+.sidebar-role {
+    -fx-text-fill: -c-ink-text;
+    -fx-font-size: 12px;
+    -fx-padding: 0 20 8 20;
+}
+
+#contentArea,
+.content-area {
+    -fx-background-color: -c-bg;
+}
+
+
+/* ==========================================================================
+   6. KHUNG NỘI DUNG CỦA TỪNG MODULE
+   Gợi ý cấu trúc mỗi màn hình:
+     VBox.page
+       ├─ HBox (Label.page-title + Label.page-subtitle, nút "Thêm mới" btn-primary)
+       └─ VBox.card
+            ├─ HBox.toolbar  (ô tìm kiếm, ComboBox lọc, nút Tìm)
+            └─ TableView
+   ========================================================================== */
+.page {
+    -fx-padding: 24;
+    -fx-spacing: 16;
+}
+.page-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+.page-subtitle {
+    -fx-text-fill: -c-muted;
+}
+.section-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+.card {
+    -fx-background-color: -c-surface;
+    -fx-background-radius: 10;
+    -fx-border-color: -c-line;
+    -fx-border-radius: 10;
+    -fx-padding: 16;
+    -fx-spacing: 12;
+}
+.toolbar {
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 10;
+}
+
+.separator .line {
+    -fx-border-color: -c-line-soft;
+    -fx-border-width: 1 0 0 0;
+    -fx-background-color: transparent;
+}
+
+
+/* ==========================================================================
+   7. NHÃN TRẠNG THÁI (badge) — dùng trong ô bảng qua setCellFactory
+      label.getStyleClass().addAll("badge", "badge-warning");
+   ========================================================================== */
+.badge {
+    -fx-padding: 2 10;
+    -fx-background-radius: 20;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+.badge-success { -fx-background-color: -c-success-tint; -fx-text-fill: -c-success; }
+.badge-warning { -fx-background-color: -c-warning-tint; -fx-text-fill: -c-warning; }
+.badge-danger  { -fx-background-color: -c-danger-tint;  -fx-text-fill: #9C2A1E; }
+.badge-info    { -fx-background-color: -c-primary-tint; -fx-text-fill: -c-primary-dark; }
+.badge-neutral { -fx-background-color: -c-line-soft;    -fx-text-fill: -c-muted; }
+
+
+/* ==========================================================================
+   8. DASHBOARD
+   Thẻ số liệu: VBox.stat-card chứa Label.stat-label + Label.stat-value
+   Thẻ cảnh báo (tồn kho thấp): thêm class "warning" cho stat-card.
+   ========================================================================== */
+.stat-card {
+    -fx-background-color: -c-surface;
+    -fx-background-radius: 10;
+    -fx-border-color: -c-line;
+    -fx-border-radius: 10;
+    -fx-padding: 14 18;
+    -fx-spacing: 2;
+}
+.stat-label {
+    -fx-text-fill: -c-muted;
+}
+.stat-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+.stat-card.warning {
+    -fx-background-color: #FFF8E3;
+    -fx-border-color: #F0D58C;
+}
+.stat-card.warning .stat-value {
+    -fx-text-fill: -c-warning;
+}
+
+/* --- Biểu đồ (BarChart / LineChart / PieChart) --- */
+.chart {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.chart-content {
+    -fx-padding: 8;
+}
+.chart-title {
+    -fx-text-fill: -c-text;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-padding: 4;
+}
+.chart-legend-item {
+    -fx-text-fill: -c-muted;
+}
+.axis {
+    -fx-tick-label-fill: -c-muted;
+    -fx-tick-label-font-size: 12px;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: -c-line-soft;
+}
+.chart-vertical-zero-line,
+.chart-horizontal-zero-line {
+    -fx-stroke: -c-line;
+}
+.bar-chart .chart-bar {
+    -fx-background-color: -fx-bar-fill;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4 4 0 0;
+}
+.chart-series-line {
+    -fx-stroke-width: 2.5px;
+}
+.chart-pie-label {
+    -fx-fill: -c-text;
+    -fx-font-size: 12px;
+}
+
+.default-color0.chart-bar                { -fx-bar-fill: -c-chart-1; }
+.default-color0.chart-series-line        { -fx-stroke: -c-chart-1; }
+.default-color0.chart-line-symbol        { -fx-background-color: -c-chart-1, white; }
+.default-color0.chart-pie                { -fx-pie-color: -c-chart-1; -fx-background-color: -fx-pie-color; }
+.default-color0.chart-legend-item-symbol { -fx-background-color: -c-chart-1; }
+
+.default-color1.chart-bar                { -fx-bar-fill: -c-chart-2; }
+.default-color1.chart-series-line        { -fx-stroke: -c-chart-2; }
+.default-color1.chart-line-symbol        { -fx-background-color: -c-chart-2, white; }
+.default-color1.chart-pie                { -fx-pie-color: -c-chart-2; -fx-background-color: -fx-pie-color; }
+.default-color1.chart-legend-item-symbol { -fx-background-color: -c-chart-2; }
+
+.default-color2.chart-bar                { -fx-bar-fill: -c-chart-3; }
+.default-color2.chart-series-line        { -fx-stroke: -c-chart-3; }
+.default-color2.chart-line-symbol        { -fx-background-color: -c-chart-3, white; }
+.default-color2.chart-pie                { -fx-pie-color: -c-chart-3; -fx-background-color: -fx-pie-color; }
+.default-color2.chart-legend-item-symbol { -fx-background-color: -c-chart-3; }
+
+.default-color3.chart-bar                { -fx-bar-fill: -c-chart-4; }
+.default-color3.chart-series-line        { -fx-stroke: -c-chart-4; }
+.default-color3.chart-line-symbol        { -fx-background-color: -c-chart-4, white; }
+.default-color3.chart-pie                { -fx-pie-color: -c-chart-4; -fx-background-color: -fx-pie-color; }
+.default-color3.chart-legend-item-symbol { -fx-background-color: -c-chart-4; }
+
+.default-color4.chart-bar                { -fx-bar-fill: -c-chart-5; }
+.default-color4.chart-series-line        { -fx-stroke: -c-chart-5; }
+.default-color4.chart-line-symbol        { -fx-background-color: -c-chart-5, white; }
+.default-color4.chart-pie                { -fx-pie-color: -c-chart-5; -fx-background-color: -fx-pie-color; }
+.default-color4.chart-legend-item-symbol { -fx-background-color: -c-chart-5; }
+
+.default-color5.chart-bar                { -fx-bar-fill: -c-chart-6; }
+.default-color5.chart-series-line        { -fx-stroke: -c-chart-6; }
+.default-color5.chart-line-symbol        { -fx-background-color: -c-chart-6, white; }
+.default-color5.chart-pie                { -fx-pie-color: -c-chart-6; -fx-background-color: -fx-pie-color; }
+.default-color5.chart-legend-item-symbol { -fx-background-color: -c-chart-6; }
+
+
+/* ==========================================================================
+   9. MÀN HÌNH ĐĂNG NHẬP  (login.fxml)
+   Root (StackPane/AnchorPane): "login-root"  →  VBox "login-card" đặt giữa
+   ========================================================================== */
+.login-root {
+    -fx-background-color: -c-ink;
+}
+.login-card {
+    -fx-background-color: -c-surface;
+    -fx-background-radius: 12;
+    -fx-padding: 32 36 32 36;
+    -fx-spacing: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 30, 0, 0, 10);
+}
+/* TÙY CHỌN — dải vạch vàng-đen kiểu băng cảnh báo kho ở mép trên thẻ đăng nhập.
+   Bỏ comment khối dưới để bật:
+.login-card {
+    -fx-border-color: linear-gradient(from 0px 0px to 16px 16px, repeat,
+        #F4A300 0%, #F4A300 50%, #12262D 50%, #12262D 100%) transparent transparent transparent;
+    -fx-border-width: 6 0 0 0;
+    -fx-border-radius: 12 12 0 0;
+}
+*/
+.login-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+.login-subtitle {
+    -fx-text-fill: -c-muted;
+}
+
+
+/* ==========================================================================
+   10. POPUP: TOOLTIP, MENU CHUỘT PHẢI, HỘP THOẠI (Alert)
+   Lưu ý: Alert/Dialog là cửa sổ riêng, phải gắn app.css vào DialogPane
+   (xem hướng dẫn) thì phần dưới đây mới có tác dụng.
+   ========================================================================== */
+.tooltip {
+    -fx-background-color: -c-ink;
+    -fx-background-radius: 6;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 6 10;
+}
+
+.context-menu {
+    -fx-background-color: -c-surface;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-color: -c-line;
+    -fx-border-radius: 8;
+    -fx-padding: 4;
+    -fx-effect: dropshadow(gaussian, rgba(18, 38, 45, 0.18), 14, 0, 0, 4);
+}
+.context-menu .menu-item {
+    -fx-background-radius: 4;
+    -fx-padding: 7 14;
+}
+.context-menu .menu-item:focused {
+    -fx-background-color: -c-hover;
+}
+.context-menu .menu-item:focused > .label {
+    -fx-text-fill: -c-text;
+}
+
+.dialog-pane {
+    -fx-background-color: -c-surface;
+    -fx-font-size: 13px;
+}
+.dialog-pane > .content.label {
+    -fx-padding: 4 24 20 24;
+    -fx-font-size: 14px;
+}
+.dialog-pane:header > .header-panel {
+    -fx-background-color: -c-surface;
+    -fx-padding: 20 24 4 24;
+}
+.dialog-pane:header > .header-panel > .label {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+.dialog-pane > .button-bar {
+    -fx-background-color: -c-surface;
+}
+.dialog-pane > .button-bar > .container {
+    -fx-padding: 12 24 20 24;
+    -fx-spacing: 8;
+}
