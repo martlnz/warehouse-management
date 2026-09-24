@@ -15,6 +15,9 @@ public class App extends Application {
         );
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(
+                getClass().getResource("/css/App.css").toExternalForm()
+        );
 
 
 
