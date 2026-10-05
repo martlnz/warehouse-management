@@ -12,4 +12,10 @@ public class UserService {
     public void addUser(User user){
         userDAO.addUser(user);
     }
+    public List<User> searchUsers(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllUsers();
+        }
+        return userDAO.searchUsers(keyword.trim());
+    }
 }

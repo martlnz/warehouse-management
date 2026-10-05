@@ -12,7 +12,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
+    public List<User> searchUsers(String keyword) {
+        List<User> userList = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE username LIKE ? OR full_name LIKE ?";
 
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            String searchPattern = "%" + keyword + "%";
+            pstmt.setString(1, searchPattern);
+            pstmt.setString(2, searchPattern);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    user.setFullName(rs.getString("full_name"));
+                    user.setRole(Role.fromString(rs.getString("role")));
+                    user.setActive(rs.getBoolean("is_active"));
+
+                    userList.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
     public User findByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
         try (Connection conn = DatabaseConfig.getConnection();

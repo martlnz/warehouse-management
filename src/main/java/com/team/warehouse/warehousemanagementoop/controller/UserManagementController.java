@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.util.List;
 
 public class UserManagementController {
+    @FXML private TextField searchTextField;
     @FXML
     private TableView<User> userTableView;
     @FXML private TableColumn<User, Integer> idColumn;
@@ -55,7 +56,18 @@ public class UserManagementController {
         if (addButton != null) {
             addButton.setOnAction(event -> openAddUser());
         }
+        if (searchButton != null) {
+            searchButton.setOnAction(event -> handleSearch());
+        }
         loadData();
+    }
+    private void handleSearch() {
+        if (searchTextField != null) {
+            String keyword = searchTextField.getText();
+            List<User> list = userService.searchUsers(keyword);
+            ObservableList<User> observableList = FXCollections.observableArrayList(list);
+            userTableView.setItems(observableList);
+        }
     }
     private void openAddUser() {
         try {
