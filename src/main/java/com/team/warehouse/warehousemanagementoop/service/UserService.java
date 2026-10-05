@@ -9,4 +9,7 @@ public class UserService {
     public List<User> getAllUsers() {
         return userDAO.findAll();
     }
+    public void addUser(User user){
+        userDAO.addUser(user);
+    }
 }

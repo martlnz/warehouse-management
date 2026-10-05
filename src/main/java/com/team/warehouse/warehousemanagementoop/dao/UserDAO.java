@@ -26,7 +26,7 @@ public class UserDAO {
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
                     user.setFullName(rs.getString("full_name"));
-                    user.setRole(Role.valueOf(rs.getString("role")));
+                    user.setRole(Role.fromString(rs.getString("role")));
                     user.setActive(rs.getBoolean("is_active"));
                     return user;
                 }
@@ -50,7 +50,7 @@ public class UserDAO {
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setFullName(rs.getString("full_name"));
-                user.setRole(Role.valueOf(rs.getString("role")));
+                user.setRole(Role.fromString(rs.getString("role")));
                 user.setActive(rs.getBoolean("is_active"));
 
                 userList.add(user);
@@ -59,5 +59,23 @@ public class UserDAO {
             e.printStackTrace();
         }
         return userList;
+    }
+    public void addUser(User user) {
+        String sql = "INSERT INTO users (username ,password , full_name, role, is_active) VALUES (? ,?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, user.getUsername());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getFullName());
+            pstmt.setString(4,user.getRole().name());
+            pstmt.setBoolean(5, user.isActive());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

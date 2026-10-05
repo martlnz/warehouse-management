@@ -5,11 +5,13 @@ import com.team.warehouse.warehousemanagementoop.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -50,7 +52,30 @@ public class UserManagementController {
                 }
             }
         });
+        if (addButton != null) {
+            addButton.setOnAction(event -> openAddUser());
+        }
         loadData();
+    }
+    private void openAddUser() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/user_form.fxml"));
+            Parent root = loader.load();
+
+            UserFormController formController = loader.getController();
+            formController.setOnUserSavedCallback(this::loadData);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Thêm người dùng mới");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Không thể mở form thêm người dùng: " + e.getMessage(), ButtonType.OK);
+            alert.showAndWait();
+        }
     }
     private void loadData() {
         List<User> list = userService.getAllUsers();
