@@ -2,6 +2,7 @@ package com.team.warehouse.warehousemanagementoop.controller;
 
 import com.team.warehouse.warehousemanagementoop.entity.Supplier;
 import com.team.warehouse.warehousemanagementoop.service.PartnerService;
+import com.team.warehouse.warehousemanagementoop.service.SupplierService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -14,7 +15,7 @@ public class PartnerEditFormController {
     @FXML private TextField txtPhone;
     @FXML private TextField txtEmail;
 
-    private final PartnerService supplierService = new PartnerService();
+    private final SupplierService supplierService = new SupplierService();
     private Supplier currentSupplier;
     private Runnable onSaveSuccess;
 
