@@ -1,4 +1,5 @@
 package com.team.warehouse.warehousemanagementoop.controller;
+
 import com.team.warehouse.warehousemanagementoop.entity.Supplier;
 import com.team.warehouse.warehousemanagementoop.service.SupplierService;
 import javafx.beans.property.SimpleObjectProperty;
@@ -8,14 +9,18 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class SuplierController {
 
@@ -24,7 +29,7 @@ public class SuplierController {
     @FXML
     private TableView<Supplier> supplierTableView;
     @FXML
-    private TableColumn<Supplier, Integer> idColumn;
+    private TableColumn<Supplier, String> idColumn;
     @FXML
     private TableColumn<Supplier, String> nameColumn;
     @FXML
@@ -40,11 +45,29 @@ public class SuplierController {
     @FXML
     public void initialize() {
         System.out.println("=== INITIALIZE ĐÃ CHẠY ===");
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setCellValueFactory(param -> {
+            Supplier s = param.getValue();
+            if (s == null) {
+                return new javafx.beans.property.SimpleStringProperty("");
+            }
+
+            String idStr = String.valueOf(s.getId());
+            if (idStr.toUpperCase().startsWith("CC")) {
+                return new javafx.beans.property.SimpleStringProperty(idStr);
+            }
+
+            try {
+                int num = Integer.parseInt(idStr);
+                return new javafx.beans.property.SimpleStringProperty(String.format("CC%03d", num % 1000));
+            } catch (NumberFormatException e) {
+                return new javafx.beans.property.SimpleStringProperty(idStr);
+            }
+        });
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         supplierTableView.setPlaceholder(new Label("Không tìm thấy nhà cung cấp"));
+
         setupActionColumn();
         setupSearch();
         loadTableData();
@@ -70,29 +93,46 @@ public class SuplierController {
         sortedData.comparatorProperty().bind(supplierTableView.comparatorProperty());
         supplierTableView.setItems(sortedData);
     }
+
     private void setupActionColumn() {
         actionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue()));
         actionColumn.setCellFactory(param -> new TableCell<>() {
             private final Button editBtn = new Button("Sửa");
+            private final Button deleteBtn = new Button("Xóa");
+            private final HBox container = new HBox(10, editBtn, deleteBtn);
 
             {
+                container.setAlignment(Pos.CENTER);
+
                 editBtn.setStyle("-fx-background-color: #0d6efd; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
                 editBtn.setOnAction(event -> {
-                    Supplier supplier = getTableView().getItems().get(getIndex());
-                    handleOpenEditForm(supplier);
+                    Supplier supplier = getItem();
+                    if (supplier != null) {
+                        handleOpenEditForm(supplier);
+                    }
+                });
+
+                deleteBtn.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+                deleteBtn.setOnAction(event -> {
+                    Supplier supplier = getItem();
+                    if (supplier != null) {
+                        handleDelete(supplier);
+                    }
                 });
             }
+
             @Override
             protected void updateItem(Supplier item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    setGraphic(editBtn);
+                    setGraphic(container);
                 }
             }
         });
     }
+
     @FXML
     private void handleOpenAddForm() {
         try {
@@ -109,6 +149,7 @@ public class SuplierController {
             e.printStackTrace();
         }
     }
+
     private void handleOpenEditForm(Supplier supplier) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/partner/editsupplier-form.fxml"));
@@ -123,5 +164,32 @@ public class SuplierController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handleDelete(Supplier currentSupplier) {
+        if (currentSupplier == null) return;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Xác nhận xóa");
+        alert.setHeaderText(null);
+        alert.setContentText("Bạn có chắc chắn muốn xóa nhà cung cấp '" + currentSupplier.getName() + "' không?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                supplierService.deleteSupplier(currentSupplier.getId());
+                loadTableData();
+            } catch (RuntimeException e) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi xóa nhà cung cấp", e.getMessage());
+            }
+        }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -110,5 +110,17 @@ public class SupplierDAO {
             return false;
         }
     }
-
+    public String getLastSupplierId() {
+        String sql = "SELECT id FROM suppliers ORDER BY id DESC LIMIT 1";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getString("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

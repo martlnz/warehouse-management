@@ -38,7 +38,7 @@ public class PartnerEditFormController {
 
         try {
             supplierService.updateSupplier(currentSupplier);
-
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Lưu thông tin nhà cung cấp thành công!");
             if (onSaveSuccess != null) {
                 onSaveSuccess.run();
             }

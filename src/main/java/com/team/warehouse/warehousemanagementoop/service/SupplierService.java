@@ -23,6 +23,7 @@ public class SupplierService {
         }
         return true;
     }
+
     public void updateSupplier(Supplier supplier) {
         if (supplier == null || supplier.getId() <= 0) {
             throw new RuntimeException("Dữ liệu nhà cung cấp không hợp lệ!");
@@ -34,6 +35,7 @@ public class SupplierService {
             throw new RuntimeException("Cập nhật thất bại");
         }
     }
+
     private void validateSupplier(Supplier supplier) {
         if (supplier.getName() == null || supplier.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Tên nhà cung cấp không được để trống!");
@@ -68,6 +70,22 @@ public class SupplierService {
         boolean deleted = supplierDAO.deleteSupplier(id);
         if (!deleted) {
             throw new RuntimeException("Không thể xóa nhà cung cấp!");
+        }
+    }
+
+    public String getNextSupplierId() {
+        String lastId = supplierDAO.getLastSupplierId();
+
+        if (lastId == null || lastId.trim().isEmpty()) {
+            return "CC001";
+        }
+
+        try {
+            int numericPart = Integer.parseInt(lastId.substring(2)); // Cắt bỏ 2 ký tự "CC"
+            numericPart++;
+            return String.format("CC%03d", numericPart);
+        } catch (Exception e) {
+            return "CC001";
         }
     }
 }

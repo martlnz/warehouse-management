@@ -33,8 +33,6 @@
 
         <!-- Các nút bấm Xóa / Lưu -->
         <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
-            <Button text="Xóa" onAction="#handleDelete" prefWidth="85"
-                    style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" />
             <Button text="Lưu" onAction="#handleSave" prefWidth="85"
                     style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" />
         </HBox>

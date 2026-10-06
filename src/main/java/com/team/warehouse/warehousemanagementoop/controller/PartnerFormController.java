@@ -46,7 +46,7 @@ public class PartnerFormController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Thành công");
             alert.setHeaderText(null);
-            alert.setContentText("Thêm nhà cung cấp mới thành công!\nBạn muốn làm gì tiếp theo?");
+            alert.setContentText("Thêm nhà cung cấp mới thành công!\nBạn muốn thêm tiếp?");
             alert.getButtonTypes().setAll(btnContinue, btnExit);
 
 
