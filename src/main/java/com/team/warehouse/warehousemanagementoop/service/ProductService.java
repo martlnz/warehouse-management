@@ -94,4 +94,25 @@ public class ProductService {
             throw new Exception("Đơn giá không được là số âm!");
         }
     }
+     // Tự động sinh mã sản phẩm tiếp theo
+
+    public String generateNextProductCode() {
+        String lastCode = productDAO.getLastProductCode();
+
+
+        if (lastCode == null || !lastCode.startsWith("SP")) {
+            return "SP001";
+        }
+
+        try {
+
+            int currentNumber = Integer.parseInt(lastCode.substring(2));
+            int nextNumber = currentNumber + 1;
+
+            return String.format("SP%03d", nextNumber);
+        } catch (Exception e) {
+
+            return "SP" + (System.currentTimeMillis() % 10000);
+        }
+    }
 }

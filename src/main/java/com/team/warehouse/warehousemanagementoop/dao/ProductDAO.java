@@ -106,10 +106,10 @@ public class ProductDAO {
         }
     }
 
-    // Xóa sản phẩm (Soft Delete - xoá ẩn)
-
+     // Xóa sản phẩm : Xoá cứng
     public boolean delete(long id) {
-        String sql = "UPDATE products SET is_active = 0 WHERE id = ?";
+        // Thay đổi câu lệnh SQL để xóa hẳn dòng dữ liệu
+        String sql = "DELETE FROM products WHERE id = ?";
 
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -135,5 +135,41 @@ public class ProductDAO {
         product.setPrice(rs.getDouble("price"));
         product.setActive(rs.getBoolean("is_active"));
         return product;
+    }
+
+    // Lấy mã sản phẩm được thêm vào cuối cùng (mới nhất) trong CSDL
+
+    public String getLastProductCode() {
+        // Lấy sản phẩm có id lớn nhất (mới thêm nhất)
+        String sql = "SELECT TOP 1 code FROM products ORDER BY id DESC";
+
+        try (Connection conn = com.team.warehouse.warehousemanagementoop.config.DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getString("code");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+     // Cập nhật số lượng tồn kho của sản phẩm (Dùng cho Nhập/Xuất kho
+    public boolean updateStock(long productId, int quantityChange) {
+        // Lệnh SQL cộng thẳng số lượng thay đổi vào số lượng hiện tại
+        String sql = "UPDATE products SET quantity = quantity + ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, quantityChange);
+            pstmt.setLong(2, productId);
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
