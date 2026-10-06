@@ -89,6 +89,9 @@ public class UserDAO {
         return userList;
     }
     public void addUser(User user) {
+        if (checkByUsername(user.getUsername())) {
+            throw new RuntimeException("Tên đăng nhập '" + user.getUsername() + "' đã tồn tại! Vui lòng chọn tên đăng nhập khác.");
+        }
         String sql = "INSERT INTO users (username ,password , full_name, role, is_active) VALUES (? ,?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConfig.getConnection();
@@ -105,6 +108,22 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public boolean checkByUsername(String username) {
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     public void updateUser(User user) {
         String sql = "UPDATE users SET username = ?, password = ?, full_name = ?, role = ?, is_active = ? WHERE id = ?";

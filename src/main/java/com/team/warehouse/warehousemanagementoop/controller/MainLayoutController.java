@@ -81,7 +81,7 @@ public class MainLayoutController {
     private void applyRolePermissions() {
         User currentUser = SessionManager.getCurrentUser();
         if (currentUser == null || currentUser.getRole() == null) return;
-        String role = currentUser.getRole().toString();
+        String role = currentUser.getRole().name();
 
         switch (role) {
             case "ADMIN":

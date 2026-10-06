@@ -37,7 +37,7 @@ public class LoginController {
                 stage.setMaximized(true);
             }
         } catch (Exception e) {
-            errorLabel.setText("Không load được màn hình chính: " + e.getMessage());
+            errorLabel.setText(e.getMessage());
         }
     }
 }
