@@ -106,4 +106,33 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+    public void updateUser(User user) {
+        String sql = "UPDATE users SET username = ?, password = ?, full_name = ?, role = ?, is_active = ? WHERE id = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, user.getUsername());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getFullName());
+            pstmt.setString(4, user.getRole().name());
+            pstmt.setBoolean(5, user.isActive());
+            pstmt.setInt(6, user.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(int id) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -18,4 +18,11 @@ public class UserService {
         }
         return userDAO.searchUsers(keyword.trim());
     }
+    public void updateUser(User user) {
+        userDAO.updateUser(user);
+    }
+
+    public void deleteUser(int id) {
+        userDAO.deleteUser(id);
+    }
 }
