@@ -1,5 +1,5 @@
 package com.team.warehouse.warehousemanagementoop.controller;
-
+import javafx.scene.layout.HBox;
 import com.team.warehouse.warehousemanagementoop.entity.User;
 import com.team.warehouse.warehousemanagementoop.service.UserService;
 import javafx.collections.FXCollections;
@@ -41,7 +41,7 @@ public class UserManagementController {
         usernameColumn.setStyle("-fx-alignment: CENTER;");
         fullNameColumn.setStyle("-fx-alignment: CENTER;");
         roleColumn.setStyle("-fx-alignment: CENTER;");
-
+        actionColumn.setStyle("-fx-alignment: CENTER;");
         activeColumn.setCellValueFactory(new PropertyValueFactory<>("active"));
         activeColumn.setCellFactory(column -> new TableCell<User, Boolean>() {
 
@@ -67,16 +67,47 @@ public class UserManagementController {
         if (searchButton != null) {
             searchButton.setOnAction(event -> handleSearch());
         }
+        // Hàm tự search
+        if (searchTextField != null) {
+            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                handleSearch();
+            });
+        }
         actionColumn.setCellFactory(param -> new TableCell<User, Void>() {
             private final Button editBtn = new Button("Sửa");
+            private final Button deleteBtn = new Button("Xóa");
 
+            private final HBox btnContainer = new HBox(10, editBtn, deleteBtn);
             {
+                btnContainer.setAlignment(Pos.CENTER);
                 editBtn.setStyle("-fx-background-color: #007bff; -fx-text-fill: white; -fx-cursor: hand;");
                 editBtn.setOnAction(event -> {
                     User selectedUser = getTableView().getItems().get(getIndex());
                     openEditUserPopup(selectedUser);
                 });
-                setAlignment(Pos.CENTER);
+
+                deleteBtn.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-cursor: hand;");
+                deleteBtn.setOnAction(event -> {
+                    User selectedUser = getTableView().getItems().get(getIndex());
+
+                    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                            "Bạn có chắc chắn muốn xóa người dùng '" + selectedUser.getUsername() + "'?",
+                            ButtonType.YES, ButtonType.NO);
+                    confirm.setTitle("Xác nhận xóa");
+                    confirm.setHeaderText(null);
+
+                    confirm.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.YES) {
+                            try {
+                                userService.deleteUser(selectedUser.getId());
+                                loadData();
+                            } catch (Exception e) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR, "Lỗi khi xóa: " + e.getMessage(), ButtonType.OK);
+                                alert.showAndWait();
+                            }
+                        }
+                    });
+                });
             }
 
             @Override
@@ -85,7 +116,7 @@ public class UserManagementController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(editBtn);
+                    setGraphic(btnContainer);
                 }
             }
         });
@@ -103,7 +134,10 @@ public class UserManagementController {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Chỉnh sửa thông tin người dùng");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            String css = getClass().getResource("/css/style.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            stage.setScene(scene);
             stage.show();
 
         } catch (Exception e) {
@@ -131,7 +165,10 @@ public class UserManagementController {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Thêm người dùng mới");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            String css = getClass().getResource("/css/style.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            stage.setScene(scene);
             stage.show();
 
         } catch (Exception e) {

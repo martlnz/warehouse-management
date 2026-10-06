@@ -2,20 +2,23 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
-<VBox alignment="CENTER" spacing="15" xmlns="http://javafx.com/javafx/21"
+
+<VBox alignment="CENTER" spacing="15"
+      stylesheets="/css/style.css"
+      xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.team.warehouse.warehousemanagementoop.controller.UserFormController">
+
     <padding>
-        <Insets bottom="20" left="20" right="20" top="20" />
+        <Insets bottom="30" left="40" right="40" top="30" />
     </padding>
 
-    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Thêm người dùng mới" />
+    <Label text="Thêm người dùng mới" styleClass="header-label" />
 
-    <GridPane hgap="10" vgap="12">
+    <GridPane hgap="15" vgap="15">
         <Label text="Tên đăng nhập:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="txtUsername" promptText="Nhập tên đăng nhập" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="txtUsername" promptText="Nhập tên đăng nhập" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="250"/>
 
         <Label text="Họ tên:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField fx:id="txtFullName" promptText="Nhập họ tên" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -24,13 +27,14 @@
         <PasswordField fx:id="txtPassword" promptText="Nhập mật khẩu" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
         <Label text="Vai trò:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <ComboBox fx:id="cbRole" prefWidth="200" promptText="Chọn vai trò" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <ComboBox fx:id="cbRole" prefWidth="250" promptText="Chọn vai trò" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
         <Label text="Trạng thái:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
         <CheckBox fx:id="chkActive" selected="true" text="Hoạt động" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
+            <ColumnConstraints minWidth="100"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
         </columnConstraints>
         <rowConstraints>
             <RowConstraints />
@@ -41,8 +45,11 @@
         </rowConstraints>
     </GridPane>
 
-    <HBox alignment="CENTER_RIGHT" spacing="10">
-        <Button fx:id="btnSave" onAction="#handleSave" text="Lưu" defaultButton="true"/>
-        <Button fx:id="btnCancel" onAction="#handleCancel" text="Hủy" />
+    <HBox alignment="CENTER_RIGHT" spacing="12">
+        <VBox.margin>
+            <Insets top="10" />
+        </VBox.margin>
+        <Button fx:id="btnCancel" onAction="#handleCancel" text="Hủy" styleClass="btn-cancel" />
+        <Button fx:id="btnSave" onAction="#handleSave" text="Lưu" defaultButton="true" styleClass="btn-save" />
     </HBox>
 </VBox>

@@ -32,7 +32,7 @@
                 <TableColumn fx:id="fullNameColumn" text="Họ tên" prefWidth="180"/>
                 <TableColumn fx:id="roleColumn" text="Vai trò" prefWidth="140"/>
                 <TableColumn fx:id="activeColumn" text="Trạng thái" prefWidth="100"/>
-                <TableColumn fx:id="actionColumn" text="Thao tác" prefWidth="140"/>
+                <TableColumn fx:id="actionColumn" text="Thao tác" prefWidth="160"/>
             </columns>
         </TableView>
     </center>

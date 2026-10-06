@@ -73,32 +73,6 @@ public class UserEditFormController {
     }
 
     @FXML
-    private void handleDelete() {
-        if (currentUser == null) return;
-
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có chắc chắn muốn xóa người dùng này?", ButtonType.YES, ButtonType.NO);
-        confirmAlert.setTitle("Xác nhận xóa");
-        confirmAlert.setHeaderText(null);
-
-        confirmAlert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.YES) {
-                try {
-                    userService.deleteUser(currentUser.getId());
-
-                    if (onUserSavedCallback != null) {
-                        onUserSavedCallback.run();
-                    }
-
-                    closeStage();
-                    showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã xóa người dùng thành công!");
-                } catch (Exception e) {
-                    showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể xóa: " + e.getMessage());
-                }
-            }
-        });
-    }
-
-    @FXML
     private void handleCancel() {
         closeStage();
     }

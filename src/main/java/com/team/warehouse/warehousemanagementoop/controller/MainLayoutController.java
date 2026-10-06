@@ -73,9 +73,14 @@ public class MainLayoutController {
     private void onLogoutClick() throws Exception {
         SessionManager.clear();
         Parent loginRoot = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+        Scene scene = new Scene(loginRoot);
+        scene.getStylesheets().add(
+                getClass().getResource("/css/App.css").toExternalForm()
+        );
+
         Stage stage = (Stage) contentArea.getScene().getWindow();
         stage.setMaximized(false);
-        stage.setScene(new Scene(loginRoot));
+        stage.setScene(scene);
         stage.centerOnScreen();
     }
     private void applyRolePermissions() {

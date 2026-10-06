@@ -43,6 +43,5 @@
 
     <HBox alignment="CENTER_RIGHT" spacing="10">
         <Button fx:id="btnSave" onAction="#handleSave" text="Lưu" defaultButton="true" style="-fx-background-color: #28a745; -fx-text-fill: white;" />
-        <Button fx:id="btnDelete" onAction="#handleDelete" text="Xóa" style="-fx-background-color: #dc3545; -fx-text-fill: white;" />
     </HBox>
 </VBox>
