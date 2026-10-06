@@ -13,12 +13,11 @@ import java.util.List;
 public class ProductDAO {
 
 
-     // Trích xuất toàn bộ dữ liệu sản phẩm đang hoạt động
+    // Trích xuất toàn bộ dữ liệu sản phẩm
 
     public List<Product> findAll() {
         List<Product> products = new ArrayList<>();
-        // Chỉ lấy những sản phẩm có is_active = 1
-        String sql = "SELECT * FROM products WHERE is_active = 1";
+        String sql = "SELECT * FROM products";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
@@ -37,8 +36,8 @@ public class ProductDAO {
 
     public List<Product> search(String keyword) {
         List<Product> products = new ArrayList<>();
-        // Sử dụng LIKE để tìm kiếm tương đối và bỏ qua các sản phẩm đã bị xóa mềm
-        String sql = "SELECT * FROM products WHERE (name LIKE ? OR code LIKE ?) AND is_active = 1";
+
+        String sql = "SELECT * FROM products WHERE name LIKE ? OR code LIKE ?";
 
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -56,9 +55,9 @@ public class ProductDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return products;
     }
-
 
     //Thêm sản phẩm mới vào cơ sở dữ liệu
 
@@ -108,7 +107,7 @@ public class ProductDAO {
 
      // Xóa sản phẩm : Xoá cứng
     public boolean delete(long id) {
-        // Thay đổi câu lệnh SQL để xóa hẳn dòng dữ liệu
+
         String sql = "DELETE FROM products WHERE id = ?";
 
         try (Connection conn = DatabaseConfig.getConnection();
@@ -155,7 +154,7 @@ public class ProductDAO {
         }
         return null;
     }
-     // Cập nhật số lượng tồn kho của sản phẩm (Dùng cho Nhập/Xuất kho
+     // Cập nhật số lượng tồn kho của sản phẩm (Dùng cho Nhập/Xuất kho)
     public boolean updateStock(long productId, int quantityChange) {
         // Lệnh SQL cộng thẳng số lượng thay đổi vào số lượng hiện tại
         String sql = "UPDATE products SET quantity = quantity + ? WHERE id = ?";

@@ -10,33 +10,91 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" spacing="16" fx:controller="com.team.warehouse.warehousemanagementoop.controller.ProductFormController">
-    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      spacing="12"
+      fx:controller="com.team.warehouse.warehousemanagementoop.controller.ProductFormController">
 
-    <Label text="Thêm / Sửa sản phẩm" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    <padding>
+        <Insets top="16" right="16" bottom="16" left="16"/>
+    </padding>
+
+    <Label text="Thêm / Sửa sản phẩm"
+           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 
     <GridPane hgap="10" vgap="10">
-        <Label text="Mã sản phẩm:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <TextField fx:id="codeTextField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-        <Label text="Tên sản phẩm:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <TextField fx:id="nameTextField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Label text="Mã sản phẩm:"
+               GridPane.rowIndex="0"
+               GridPane.columnIndex="0"/>
 
-        <Label text="Danh mục:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <ComboBox fx:id="categoryComboBox" prefWidth="200" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <TextField fx:id="codeTextField"
+                   prefWidth="200"
+                   GridPane.rowIndex="0"
+                   GridPane.columnIndex="1"/>
 
-        <Label text="Số lượng tồn:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-        <TextField fx:id="quantityTextField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-        <Label text="Đơn giá:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-        <TextField fx:id="priceTextField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+        <Label text="Tên sản phẩm:"
+               GridPane.rowIndex="1"
+               GridPane.columnIndex="0"/>
 
-        <Label text="Đang kinh doanh:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-        <CheckBox fx:id="activeCheckBox" selected="true" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+        <TextField fx:id="nameTextField"
+                   prefWidth="200"
+                   GridPane.rowIndex="1"
+                   GridPane.columnIndex="1"/>
+
+
+        <Label text="Danh mục:"
+               GridPane.rowIndex="2"
+               GridPane.columnIndex="0"/>
+
+        <ComboBox fx:id="categoryComboBox"
+                  prefWidth="200"
+                  GridPane.rowIndex="2"
+                  GridPane.columnIndex="1"/>
+
+
+        <Label text="Số lượng tồn:"
+               GridPane.rowIndex="3"
+               GridPane.columnIndex="0"/>
+
+        <TextField fx:id="quantityTextField"
+                   prefWidth="200"
+                   GridPane.rowIndex="3"
+                   GridPane.columnIndex="1"/>
+
+
+        <Label text="Đơn giá:"
+               GridPane.rowIndex="4"
+               GridPane.columnIndex="0"/>
+
+        <TextField fx:id="priceTextField"
+                   prefWidth="200"
+                   GridPane.rowIndex="4"
+                   GridPane.columnIndex="1"/>
+
+
+        <Label text="Đang kinh doanh:"
+               GridPane.rowIndex="5"
+               GridPane.columnIndex="0"/>
+
+        <CheckBox fx:id="activeCheckBox"
+                  selected="true"
+                  GridPane.rowIndex="5"
+                  GridPane.columnIndex="1"/>
+
     </GridPane>
 
-    <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button fx:id="cancelButton" text="Hủy"/>
-        <Button fx:id="saveButton" text="Lưu" style="-fx-font-weight: bold;"/>
+    <HBox spacing="10"
+          alignment="CENTER_RIGHT">
+
+        <Button fx:id="cancelButton"
+                text="Hủy"/>
+
+        <Button fx:id="saveButton"
+                text="Lưu"
+                style="-fx-font-weight: bold;"/>
+
     </HBox>
+
 </VBox>

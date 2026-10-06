@@ -79,18 +79,4 @@ public class Product {
     public void setActive(boolean active) {
         isActive = active;
     }
-
-    // Optional: toString method for easier debugging
-//    @Override
-//    public String toString() {
-//        return "Product{" +
-//                "id=" + id +
-//                ", code='" + code + '\'' +
-//                ", name='" + name + '\'' +
-//                ", categoryId=" + categoryId +
-//                ", quantity=" + quantity +
-//                ", price=" + price +
-//                ", isActive=" + isActive +
-//                '}';
-//    }
 }

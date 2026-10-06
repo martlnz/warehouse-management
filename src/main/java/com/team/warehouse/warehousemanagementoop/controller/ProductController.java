@@ -53,7 +53,7 @@ public class ProductController implements Initializable {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        // -Dịch ID thành tên danh mục
+
         categoryColumn.setCellFactory(column -> new TableCell<Product, Long>() {
             @Override
             protected void updateItem(Long categoryId, boolean empty) {
@@ -128,12 +128,10 @@ public class ProductController implements Initializable {
     }
 
     private void setupEventHandlers() {
-        searchButton.setOnAction(event -> {
-            String keyword = searchTextField.getText();
-            handleSearchProduct(keyword);
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            handleSearchProduct(newValue);
         });
 
-        // Đã sửa: Gọi hàm mở cửa sổ nổi thay vì dùng SceneNavigator
         addButton.setOnAction(event -> {
             ProductFormController.currentProductToEdit = null;
             openFormPopup("Thêm sản phẩm mới");
@@ -154,7 +152,7 @@ public class ProductController implements Initializable {
         }
     }
 
-    // Đã sửa: Gọi hàm mở cửa sổ nổi thay vì dùng SceneNavigator
+    // Gọi hàm mở cửa sổ nổi
     private void handleEditProduct(Product product) {
         ProductFormController.currentProductToEdit = product;
         openFormPopup("Sửa thông tin sản phẩm");
@@ -196,7 +194,7 @@ public class ProductController implements Initializable {
             stage.setTitle(title);
 
 
-            stage.setScene(new Scene(root, 400, 420));
+            stage.setScene(new Scene(root, 400, 330));
             stage.setResizable(false);
 
             stage.showAndWait();
