@@ -2,6 +2,7 @@ package com.team.warehouse.warehousemanagementoop.controller;
 
 import com.team.warehouse.warehousemanagementoop.entity.Supplier;
 import com.team.warehouse.warehousemanagementoop.service.PartnerService;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -10,10 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,7 +33,7 @@ public class PartnerController {
     @FXML
     private TableColumn<Supplier, String> emailColumn;
     @FXML
-    private TableColumn<Supplier, String> actionColumn;
+    private TableColumn<Supplier, Supplier> actionColumn;
 
     private final PartnerService supplierService = new PartnerService();
     private final ObservableList<Supplier> masterData = FXCollections.observableArrayList();
@@ -48,6 +46,7 @@ public class PartnerController {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         supplierTableView.setPlaceholder(new Label("Không tìm thấy nhà cung cấp"));
+        setupActionColumn();
         setupSearch();
         loadTableData();
     }
@@ -68,10 +67,32 @@ public class PartnerController {
                 return supplier.getName() != null && supplier.getName().toLowerCase().contains(lowerCaseFilter);
             });
         });
-
         SortedList<Supplier> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(supplierTableView.comparatorProperty());
         supplierTableView.setItems(sortedData);
+    }
+    private void setupActionColumn() {
+        actionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue()));
+        actionColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button editBtn = new Button("Sửa");
+
+            {
+                editBtn.setStyle("-fx-background-color: #0d6efd; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+                editBtn.setOnAction(event -> {
+                    Supplier supplier = getTableView().getItems().get(getIndex());
+                    handleOpenEditForm(supplier);
+                });
+            }
+            @Override
+            protected void updateItem(Supplier item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(editBtn);
+                }
+            }
+        });
     }
     @FXML
     private void handleOpenAddForm() {
@@ -89,4 +110,20 @@ public class PartnerController {
             e.printStackTrace();
         }
     }
+    private void handleOpenEditForm(Supplier supplier) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/partner/editsupplier-form.fxml"));
+            Parent root = loader.load();
+            PartnerEditFormController editController = loader.getController();
+            editController.setSupplierData(supplier, this::loadTableData);
+            Stage stage = new Stage();
+            stage.setTitle("Chỉnh sửa nhà cung cấp");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

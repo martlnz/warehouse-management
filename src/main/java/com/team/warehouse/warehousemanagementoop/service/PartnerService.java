@@ -19,7 +19,25 @@ public class PartnerService {
     }
 
     public boolean addSupplier(Supplier supplier) {
+        validateSupplier(supplier);
+        boolean success = supplierDAO.addSupplier(supplier);
+        if (!success) {
+            throw new RuntimeException("Lưu vào cơ sở dữ liệu thất bại!\n(Có thể do Email này đã tồn tại trong hệ thống).");
+        }
+        return true;
+    }
+    public void updateSupplier(Supplier supplier) {
+        if (supplier == null || supplier.getId() <= 0) {
+            throw new RuntimeException("Dữ liệu nhà cung cấp không hợp lệ!");
+        }
+        validateSupplier(supplier);
 
+        boolean updated = supplierDAO.updateSupplier(supplier);
+        if (!updated) {
+            throw new RuntimeException("Cập nhật thất bại");
+        }
+    }
+    private void validateSupplier(Supplier supplier) {
         if (supplier.getName() == null || supplier.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Tên nhà cung cấp không được để trống!");
         }
@@ -43,11 +61,17 @@ public class PartnerService {
         } else {
             supplier.setEmail(null);
         }
-
-        boolean success = supplierDAO.addSupplier(supplier);
-        if (!success) {
-            throw new RuntimeException("Lưu vào cơ sở dữ liệu thất bại!\n(Có thể do Email này đã tồn tại trong hệ thống).");
-        }
-        return true;
     }
+
+    public void deleteSupplier(int id) {
+        if (id <= 0) {
+            throw new RuntimeException("Mã nhà cung cấp không hợp lệ!");
+        }
+
+        boolean deleted = supplierDAO.deleteSupplier(id);
+        if (!deleted) {
+            throw new RuntimeException("Không thể xóa nhà cung cấp!");
+        }
+    }
+
 }

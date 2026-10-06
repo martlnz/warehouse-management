@@ -61,4 +61,54 @@ public class SupplierDAO {
             return false;
         }
     }
+    public boolean updateSupplier(Supplier supplier) {
+        String sql = "UPDATE suppliers SET name = ?, phone = ?, email = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, supplier.getName());
+
+            if (supplier.getPhone() != null && !supplier.getPhone().trim().isEmpty()) {
+                pstmt.setString(2, supplier.getPhone());
+            } else {
+                pstmt.setNull(2, Types.NVARCHAR);
+            }
+
+            if (supplier.getEmail() != null && !supplier.getEmail().trim().isEmpty()) {
+                pstmt.setString(3, supplier.getEmail());
+            } else {
+                pstmt.setNull(3, Types.NVARCHAR);
+            }
+
+            pstmt.setInt(4, supplier.getId());
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.out.println("LỖI SQL: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteSupplier(int id) {
+        String sql = "DELETE FROM suppliers WHERE id = ?";
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.out.println("LỖI SQL: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

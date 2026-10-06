@@ -33,7 +33,7 @@
                 <TableColumn fx:id="nameColumn" text="Tên nhà cung cấp" prefWidth="220"/>
                 <TableColumn fx:id="phoneColumn" text="Số điện thoại" prefWidth="130"/>
                 <TableColumn fx:id="emailColumn" text="Email" prefWidth="180"/>
-                <TableColumn fx:id="actionColumn" text="Địa chỉ" prefWidth="140"/>
+                <TableColumn fx:id="actionColumn" text="Thao Tác" prefWidth="140"/>
             </columns>
             <BorderPane.margin>
                 <Insets right="15"/>
