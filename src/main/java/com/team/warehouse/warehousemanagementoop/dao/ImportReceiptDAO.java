@@ -23,10 +23,6 @@ import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Thao tác trên bảng stock_receipts (lọc receipt_type = 'IMPORT') và receipt_details.
- * Các hàm nhận Connection dùng chung 1 transaction do ImportService quản lý.
- */
 public class ImportReceiptDAO {
 
     private static final String SELECT_RECEIPT =
@@ -38,22 +34,17 @@ public class ImportReceiptDAO {
                     + "LEFT JOIN suppliers s ON r.supplier_id = s.id "
                     + "WHERE r.receipt_type = 'IMPORT' ";
 
-    /** Tiền tố mã phiếu: NK001, NK002, ... (đánh số riêng cho phiếu nhập). */
     private static final String CODE_PREFIX = "NK";
-
     private static final String ORDER_BY = " ORDER BY r.created_date DESC, r.id DESC";
 
-    /** Danh sách phiếu nhập (mới nhất trước), chưa kèm dòng chi tiết. */
     public List<ImportReceipt> findAll() throws DataAccessException {
         return query(SELECT_RECEIPT + ORDER_BY, null);
     }
 
-    /** Tìm phiếu nhập theo tên nhà cung cấp. */
     public List<ImportReceipt> searchBySupplierName(String keyword) throws DataAccessException {
         return query(SELECT_RECEIPT + "AND s.name LIKE ? " + ORDER_BY, "%" + keyword + "%");
     }
 
-    /** Lấy 1 phiếu nhập kèm các dòng chi tiết (tự mở và đóng kết nối). */
     public ImportReceipt findById(long id) throws DataAccessException {
         try (Connection conn = DatabaseConfig.getConnection()) {
             return findById(conn, id);
@@ -62,7 +53,6 @@ public class ImportReceiptDAO {
         }
     }
 
-    /** Lấy 1 phiếu nhập kèm các dòng chi tiết trên Connection được truyền vào. Trả về null nếu không có. */
     public ImportReceipt findById(Connection conn, long id) throws DataAccessException {
         String sql = SELECT_RECEIPT + "AND r.id = ?";
         try {
@@ -84,11 +74,6 @@ public class ImportReceiptDAO {
         }
     }
 
-    /**
-     * Lưu phiếu nhập + các dòng chi tiết (chưa cộng tồn kho - việc đó do Service gọi ProductDAO).
-     * Mã hiển thị (NK001, NK002, ...) được sinh ngay trong hàm này, cùng transaction với việc lưu phiếu.
-     * Trả về id (khóa chính) của phiếu vừa tạo.
-     */
     public long insert(Connection conn, ImportReceiptDTO dto) throws DataAccessException {
         String sqlReceipt = "INSERT INTO stock_receipts (receipt_type, receipt_code, created_by, supplier_id, note, status) "
                 + "VALUES ('IMPORT', ?, ?, ?, ?, ?)";
@@ -127,12 +112,20 @@ public class ImportReceiptDAO {
         }
     }
 
-    /**
-     * Sinh mã phiếu nhập tiếp theo: NK001, NK002, ... (lấy số lớn nhất hiện có + 1).
-     * Câu SELECT khóa các phiếu nhập đến khi commit/rollback, nên 2 người tạo phiếu cùng lúc không bị trùng mã;
-     * nếu lưu thất bại và rollback thì số đó được dùng lại, không bị hụt số.
-     * Quá 999 thì tự dài ra (NK1000, ...).
-     */
+    public void delete(Connection conn, long id) throws SQLException {
+        String sqlDetail = "DELETE FROM receipt_details WHERE receipt_id = ?";
+        String sqlReceipt = "DELETE FROM stock_receipts WHERE id = ?";
+
+        try (PreparedStatement stmtDetail = conn.prepareStatement(sqlDetail)) {
+            stmtDetail.setLong(1, id);
+            stmtDetail.executeUpdate();
+        }
+        try (PreparedStatement stmtReceipt = conn.prepareStatement(sqlReceipt)) {
+            stmtReceipt.setLong(1, id);
+            stmtReceipt.executeUpdate();
+        }
+    }
+
     private String nextCode(Connection conn) throws SQLException {
         String sql = "SELECT ISNULL(MAX(TRY_CAST(SUBSTRING(receipt_code, " + (CODE_PREFIX.length() + 1) + ", 20) AS INT)), 0) + 1 "
                 + "FROM stock_receipts WITH (UPDLOCK, HOLDLOCK) WHERE receipt_type = 'IMPORT'";
@@ -208,9 +201,6 @@ public class ImportReceiptDAO {
         return receipt;
     }
 
-    /**
-     * Thống kê tổng số lượng sản phẩm nhập kho theo từng tháng, tính từ một ngày chỉ định.
-     */
     public Map<YearMonth, Integer> sumQuantityByMonth(LocalDate startDate) throws DataAccessException {
         String sql = "SELECT YEAR(r.created_date) AS yr, MONTH(r.created_date) AS mn, SUM(d.quantity) AS total "
                 + "FROM stock_receipts r "
@@ -222,7 +212,6 @@ public class ImportReceiptDAO {
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Chuyển từ java.time.LocalDate sang java.sql.Date
             stmt.setDate(1, java.sql.Date.valueOf(startDate));
 
             try (ResultSet rs = stmt.executeQuery()) {

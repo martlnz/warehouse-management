@@ -9,6 +9,7 @@ import com.team.warehouse.warehousemanagementoop.dto.ReceiptDetailDTO;
 import com.team.warehouse.warehousemanagementoop.entity.Customer;
 import com.team.warehouse.warehousemanagementoop.entity.ExportReceipt;
 import com.team.warehouse.warehousemanagementoop.entity.Product;
+import com.team.warehouse.warehousemanagementoop.entity.ReceiptDetail;
 import com.team.warehouse.warehousemanagementoop.exception.DataAccessException;
 import com.team.warehouse.warehousemanagementoop.exception.InsufficientStockException;
 
@@ -19,23 +20,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Luật nghiệp vụ xuất kho: validate phiếu, KIỂM TRA tồn kho, lưu phiếu và TRỪ tồn kho
- * trong 1 transaction (xem mục 9 của tài liệu kỹ thuật).
- */
 public class ExportService {
 
     private final ExportReceiptDAO exportReceiptDAO = new ExportReceiptDAO();
     private final ProductDAO productDAO = new ProductDAO();
     private final CustomerDAO customerDAO = new CustomerDAO();
 
-    // ===== Dữ liệu cho màn hình danh sách =====
-
     public List<ExportReceipt> findAll() throws DataAccessException {
         return exportReceiptDAO.findAll();
     }
 
-    /** Từ khóa rỗng thì trả về toàn bộ danh sách. */
     public List<ExportReceipt> searchByCustomerName(String keyword) throws DataAccessException {
         if (keyword == null || keyword.trim().isEmpty()) {
             return exportReceiptDAO.findAll();
@@ -47,13 +41,10 @@ public class ExportService {
         return exportReceiptDAO.findById(id);
     }
 
-    // ===== Dữ liệu cho combobox của form =====
-
     public List<Customer> getAllCustomers() {
         return customerDAO.getAll();
     }
 
-    /** Chỉ cho chọn sản phẩm đang hoạt động. */
     public List<Product> getActiveProducts() {
         List<Product> result = new ArrayList<>();
         for (Product product : productDAO.findAll()) {
@@ -64,16 +55,6 @@ public class ExportService {
         return result;
     }
 
-    // ===== Tạo phiếu xuất =====
-
-    /**
-     * Tạo phiếu xuất: kiểm tra đủ tồn kho -> lưu phiếu -> trừ tồn kho.
-     * Trả về phiếu vừa tạo (kèm chi tiết).
-     *
-     * @throws IllegalArgumentException   dữ liệu phiếu không hợp lệ
-     * @throws InsufficientStockException có sản phẩm không đủ tồn kho (đã rollback)
-     * @throws DataAccessException        lỗi truy cập cơ sở dữ liệu (đã rollback)
-     */
     public ExportReceipt createExportReceipt(ExportReceiptDTO dto)
             throws DataAccessException, InsufficientStockException {
         validate(dto);
@@ -102,21 +83,18 @@ public class ExportService {
             if (detail.getUnitPrice() == null || detail.getUnitPrice().signum() < 0) {
                 throw new IllegalArgumentException("Đơn giá của \"" + detail.getProductName() + "\" không hợp lệ");
             }
-            // Không cho trùng sản phẩm để việc kiểm tra tồn từng dòng luôn đúng
             if (!productIds.add(detail.getProductId())) {
                 throw new IllegalArgumentException("Sản phẩm \"" + detail.getProductName() + "\" bị trùng trong phiếu");
             }
         }
     }
 
-    /** Transaction thủ công: kiểm tra tồn + lưu phiếu + trừ tồn dùng chung 1 Connection; lỗi thì rollback. */
     private long saveInTransaction(ExportReceiptDTO dto) throws DataAccessException, InsufficientStockException {
         Connection conn = null;
         try {
             conn = DatabaseConfig.getConnection();
-            conn.setAutoCommit(false); // Bắt đầu transaction
+            conn.setAutoCommit(false);
 
-            // 1. Kiểm tra tồn kho từng sản phẩm (khóa dòng sản phẩm đến khi commit/rollback)
             for (ReceiptDetailDTO detail : dto.getDetails()) {
                 int currentStock = productDAO.getQuantityForUpdate(conn, detail.getProductId());
                 if (currentStock < 0) {
@@ -128,7 +106,6 @@ public class ExportService {
                 }
             }
 
-            // 2. Lưu phiếu xuất + trừ tồn kho (cùng 1 Connection, cùng 1 transaction)
             long receiptId = exportReceiptDAO.insert(conn, dto);
             for (ReceiptDetailDTO detail : dto.getDetails()) {
                 boolean updated = productDAO.updateStock(conn, detail.getProductId(), -detail.getQuantity());
@@ -137,7 +114,7 @@ public class ExportService {
                 }
             }
 
-            conn.commit(); // Thành công -> lưu vĩnh viễn
+            conn.commit();
             return receiptId;
 
         } catch (InsufficientStockException | DataAccessException e) {
@@ -146,6 +123,40 @@ public class ExportService {
         } catch (Exception e) {
             rollback(conn);
             throw new DataAccessException("Tạo phiếu xuất thất bại: " + e.getMessage(), e);
+        } finally {
+            closeQuietly(conn);
+        }
+    }
+
+    // Thêm hàm Xóa Phiếu Xuất + Hoàn lại Tồn kho
+    public void deleteExportReceipt(long id) throws DataAccessException {
+        Connection conn = null;
+        try {
+            conn = DatabaseConfig.getConnection();
+            conn.setAutoCommit(false);
+
+            ExportReceipt receipt = exportReceiptDAO.findById(conn, id);
+            if (receipt == null) {
+                throw new DataAccessException("Không tìm thấy phiếu xuất có ID " + id);
+            }
+
+            for (ReceiptDetail detail : receipt.getDetails()) {
+                productDAO.getQuantityForUpdate(conn, detail.getProductId());
+                boolean updated = productDAO.updateStock(conn, detail.getProductId(), detail.getQuantity());
+                if (!updated) {
+                    throw new DataAccessException("Không cộng được tồn kho sản phẩm \"" + detail.getProductName() + "\"");
+                }
+            }
+
+            exportReceiptDAO.delete(conn, id);
+
+            conn.commit();
+        } catch (DataAccessException e) {
+            rollback(conn);
+            throw e;
+        } catch (Exception e) {
+            rollback(conn);
+            throw new DataAccessException("Xóa phiếu xuất thất bại: " + e.getMessage(), e);
         } finally {
             closeQuietly(conn);
         }
