@@ -15,6 +15,8 @@ public class MainLayoutController {
 
     @FXML
     public void initialize() {
+        // Đăng ký contentArea để các màn hình con tự điều hướng được (SceneNavigator.navigateTo)
+        SceneNavigator.setMainContentArea(contentArea);
         onDashboardMenuClick();
     }
 
@@ -61,6 +63,7 @@ public class MainLayoutController {
     @FXML
     private void onLogoutClick() throws Exception {
         SessionManager.clear();
+        SceneNavigator.setMainContentArea(null);
         Parent loginRoot = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
         Stage stage = (Stage) contentArea.getScene().getWindow();
         stage.setMaximized(false);
