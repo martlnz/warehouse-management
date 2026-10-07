@@ -6,5 +6,4 @@ module com.team.warehouse.warehousemanagementoop {
     opens com.team.warehouse.warehousemanagementoop.controller to javafx.fxml;
     opens com.team.warehouse.warehousemanagementoop.entity to javafx.base;
     exports com.team.warehouse.warehousemanagementoop;
-    opens com.team.warehouse.warehousemanagementoop.entity to javafx.base;
 }
