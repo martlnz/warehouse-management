@@ -1,9 +1,11 @@
 package com.team.warehouse.warehousemanagementoop.controller;
 
 import com.team.warehouse.warehousemanagementoop.entity.Product;
+import com.team.warehouse.warehousemanagementoop.entity.User;
 import com.team.warehouse.warehousemanagementoop.service.ProductService;
 import com.team.warehouse.warehousemanagementoop.util.AlertHelper;
 
+import com.team.warehouse.warehousemanagementoop.util.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,7 +45,26 @@ public class ProductController implements Initializable {
         productService = new ProductService();
         setupTableColumns();
         setupEventHandlers();
+        applyRolePermissions();
         loadProductData();
+    }
+    private void applyRolePermissions() {
+        User currentUser = SessionManager.getCurrentUser();
+        if (currentUser == null || currentUser.getRole() == null) return;
+        String role = currentUser.getRole().name();
+
+        switch (role) {
+            case "NHAN_VIEN_KHO":
+                actionColumn.setVisible(false);
+                hideMenu(addButton);
+                break;
+        }
+    }
+    private void hideMenu(Button button) {
+        if (button != null) {
+            button.setVisible(false);
+            button.setManaged(false);
+        }
     }
 
     private void setupTableColumns() {
