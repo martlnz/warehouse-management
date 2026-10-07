@@ -72,6 +72,7 @@ public class MainLayoutController {
     @FXML
     private void onLogoutClick() throws Exception {
         SessionManager.clear();
+        SceneNavigator.setMainContentArea(null);
         Parent loginRoot = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
         Scene scene = new Scene(loginRoot);
         scene.getStylesheets().add(

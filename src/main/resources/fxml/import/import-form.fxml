@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.team.warehouse.warehousemanagementoop.controller.ImportReceiptController">
     <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
     <top>
         <Label text="Tạo phiếu nhập kho" style="-fx-font-size: 16px; -fx-font-weight: bold;">

@@ -1,4 +1,4 @@
-package com.team.warehouse.warehousemanagementoop.execption;
+package com.team.warehouse.warehousemanagementoop.exception;
 
 public class DataAccessException extends Exception {
     public DataAccessException(String message, Throwable cause) {
