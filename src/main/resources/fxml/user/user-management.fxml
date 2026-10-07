@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.team.warehouse.warehousemanagementoop.controller.UserManagementController">
     <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
     <top>
         <VBox spacing="10">
@@ -31,7 +32,7 @@
                 <TableColumn fx:id="fullNameColumn" text="Họ tên" prefWidth="180"/>
                 <TableColumn fx:id="roleColumn" text="Vai trò" prefWidth="140"/>
                 <TableColumn fx:id="activeColumn" text="Trạng thái" prefWidth="100"/>
-                <TableColumn fx:id="actionColumn" text="Thao tác" prefWidth="140"/>
+                <TableColumn fx:id="actionColumn" text="Thao tác" prefWidth="160"/>
             </columns>
         </TableView>
     </center>

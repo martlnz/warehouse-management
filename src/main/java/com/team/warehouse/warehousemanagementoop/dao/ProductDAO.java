@@ -82,7 +82,7 @@ public class ProductDAO {
     }
 
 
-    // Cập nhật thông tin sản phẩm
+     // Cập nhật thông tin sản phẩm
 
     public boolean update(Product product) {
         String sql = "UPDATE products SET code = ?, name = ?, category_id = ?, quantity = ?, price = ?, is_active = ? WHERE id = ?";
@@ -105,7 +105,7 @@ public class ProductDAO {
         }
     }
 
-    // Xóa sản phẩm : Xoá cứng
+     // Xóa sản phẩm : Xoá cứng
     public boolean delete(long id) {
 
         String sql = "DELETE FROM products WHERE id = ?";
@@ -154,7 +154,7 @@ public class ProductDAO {
         }
         return null;
     }
-    // Cập nhật số lượng tồn kho của sản phẩm (Dùng cho Nhập/Xuất kho)
+     // Cập nhật số lượng tồn kho của sản phẩm (Dùng cho Nhập/Xuất kho)
     public boolean updateStock(long productId, int quantityChange) {
         // Lệnh SQL cộng thẳng số lượng thay đổi vào số lượng hiện tại
         String sql = "UPDATE products SET quantity = quantity + ? WHERE id = ?";
@@ -169,27 +169,6 @@ public class ProductDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    // Lấy tồn kho hiện tại và KHÓA dòng sản phẩm đến khi commit/rollback. Trả về -1 nếu không có sản phẩm.
-    public int getQuantityForUpdate(Connection conn, long productId) throws SQLException {
-        String sql = "SELECT quantity FROM products WITH (UPDLOCK, ROWLOCK) WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, productId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next() ? rs.getInt("quantity") : -1;
-            }
-        }
-    }
-
-    // Cộng/trừ tồn kho trên Connection do Service truyền vào (quantityChange âm = trừ kho).
-    public boolean updateStock(Connection conn, long productId, int quantityChange) throws SQLException {
-        String sql = "UPDATE products SET quantity = quantity + ? WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, quantityChange);
-            pstmt.setLong(2, productId);
-            return pstmt.executeUpdate() > 0;
         }
     }
 }

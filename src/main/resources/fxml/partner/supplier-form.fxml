@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.team.warehouse.warehousemanagementoop.controller.PartnerFormController">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <children>
+        <!-- Tiêu đề form -->
+        <Label text="Thêm Nhà Cung Cấp Mới" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+
+        <!-- Các trường nhập liệu dạng lưới (GridPane) -->
+        <GridPane hgap="10" vgap="12">
+            <Label text="Tên nhà cung cấp (*):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="txtName" promptText="Nhập tên nhà cung cấp..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label text="Số điện thoại:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="txtPhone" promptText="Ví dụ: 0912345678" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="txtEmail" promptText="Ví dụ: abc@gmail.com" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        </GridPane>
+
+        <!-- Các nút bấm Lưu / Hủy -->
+        <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+            <Button text="Lưu" onAction="#handleSave" prefWidth="85"
+                    style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" />
+            <Button text="Hủy" onAction="#handleCancel" prefWidth="85"
+                    style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-cursor: hand;" />
+        </HBox>
+    </children>
+</VBox>
