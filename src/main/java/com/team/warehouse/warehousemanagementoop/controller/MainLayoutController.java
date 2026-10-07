@@ -1,20 +1,31 @@
 package com.team.warehouse.warehousemanagementoop.controller;
 
+import com.team.warehouse.warehousemanagementoop.entity.User;
 import com.team.warehouse.warehousemanagementoop.util.SceneNavigator;
 import com.team.warehouse.warehousemanagementoop.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class MainLayoutController {
-
     @FXML private AnchorPane contentArea;
+
+    @FXML private Button btnDashboard;
+    @FXML private Button btnProduct;
+    @FXML private Button btnCategory;
+    @FXML private Button btnSupplier;
+    @FXML private Button btnCustomer;
+    @FXML private Button btnImport;
+    @FXML private Button btnExport;
+    @FXML private Button btnUser;
 
     @FXML
     public void initialize() {
+        applyRolePermissions();
         onDashboardMenuClick();
     }
 
@@ -62,9 +73,43 @@ public class MainLayoutController {
     private void onLogoutClick() throws Exception {
         SessionManager.clear();
         Parent loginRoot = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+        Scene scene = new Scene(loginRoot);
+        scene.getStylesheets().add(
+                getClass().getResource("/css/App.css").toExternalForm()
+        );
+
         Stage stage = (Stage) contentArea.getScene().getWindow();
         stage.setMaximized(false);
-        stage.setScene(new Scene(loginRoot));
+        stage.setScene(scene);
         stage.centerOnScreen();
+    }
+    private void applyRolePermissions() {
+        User currentUser = SessionManager.getCurrentUser();
+        if (currentUser == null || currentUser.getRole() == null) return;
+        String role = currentUser.getRole().name();
+
+        switch (role) {
+            case "ADMIN":
+                hideMenu(btnCategory);
+                break;
+
+            case "QUAN_LY_KHO":
+                hideMenu(btnCategory);
+                hideMenu(btnUser);
+                break;
+
+            case "NHAN_VIEN_KHO":
+                hideMenu(btnUser);
+                hideMenu(btnCategory);
+                hideMenu(btnSupplier);
+                hideMenu(btnCustomer);
+                break;
+        }
+    }
+    private void hideMenu(Button button) {
+        if (button != null) {
+            button.setVisible(false);
+            button.setManaged(false);
+        }
     }
 }

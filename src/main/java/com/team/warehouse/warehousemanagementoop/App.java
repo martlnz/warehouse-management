@@ -20,7 +20,6 @@ public class App extends Application {
         );
 
 
-
         stage.setTitle("Hệ thống quản lý kho");
         stage.setScene(scene);
         stage.show();
@@ -28,10 +27,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        System.out.println(
-                App.class.getResource("/css/App.css")
-        );
-
         launch(args);
     }
 }
