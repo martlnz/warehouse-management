@@ -10,27 +10,34 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.team.warehouse.warehousemanagementoop.controller.SuplierController">
     <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+
     <top>
         <VBox spacing="10">
             <Label text="Quản lý nhà cung cấp" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
             <HBox spacing="8">
                 <TextField fx:id="searchTextField" promptText="Tìm theo tên nhà cung cấp..." prefWidth="220"/>
                 <Button fx:id="searchButton" text="Tìm kiếm"/>
-                <Button fx:id="addButton" text="+ Thêm nhà cung cấp"/>
+                <Button fx:id="addButton" text="+ Thêm nhà cung cấp" onAction="#handleOpenAddForm"/>
             </HBox>
         </VBox>
     </top>
+
     <center>
         <TableView fx:id="supplierTableView">
             <columns>
-                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="100"/>
                 <TableColumn fx:id="nameColumn" text="Tên nhà cung cấp" prefWidth="220"/>
                 <TableColumn fx:id="phoneColumn" text="Số điện thoại" prefWidth="130"/>
                 <TableColumn fx:id="emailColumn" text="Email" prefWidth="180"/>
-                <TableColumn fx:id="actionColumn" text="Thao tác" prefWidth="140"/>
+                <TableColumn fx:id="actionColumn" text="Thao Tác" prefWidth="220"/>
             </columns>
+            <BorderPane.margin>
+                <Insets right="15"/>
+            </BorderPane.margin>
         </TableView>
     </center>
 </BorderPane>

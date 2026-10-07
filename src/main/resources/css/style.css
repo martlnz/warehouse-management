@@ -1,0 +1,72 @@
+/* Đặt nền và font chữ mặc định cho toàn bộ form */
+.root {
+    -fx-background-color: #f4f7f6;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* Định dạng tiêu đề */
+.header-label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+/* Định dạng các nhãn (Label) */
+.label {
+    -fx-text-fill: #34495e;
+    -fx-font-size: 14px;
+}
+
+/* Định dạng các ô nhập liệu (TextField, PasswordField, ComboBox) */
+.text-field, .password-field, .combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+}
+
+/* Hiệu ứng khi click chuột vào ô nhập liệu (Focus) */
+.text-field:focused, .password-field:focused, .combo-box:focused {
+    -fx-border-color: #3498db;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.4), 8, 0, 0, 0);
+}
+
+/* Định dạng CheckBox */
+.check-box {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+}
+
+/* Định dạng nút bấm chung */
+.button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 24px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+/* Nút Lưu (Màu xanh dương chuyên nghiệp) */
+.btn-save {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+}
+.btn-save:hover {
+    -fx-background-color: #0056b3;
+}
+
+/* Nút Hủy (Màu xám/đỏ nhạt) */
+.btn-cancel {
+    -fx-background-color: #e9ecef;
+    -fx-text-fill: #495057;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 5px;
+}
+.btn-cancel:hover {
+    -fx-background-color: #dee2e6;
+}

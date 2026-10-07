@@ -1,41 +1,33 @@
-package com.team.warehouse.warehousemanagementoop.entity;
+package com.team.warehouse.warehousemanagementoop.dto;
 
 import java.math.BigDecimal;
 
 /**
- * Một dòng sản phẩm của phiếu. Ánh xạ bảng receipt_details.
- * productName chỉ để hiển thị (lấy qua JOIN với bảng products).
+ * Một dòng sản phẩm người dùng thêm vào form phiếu nhập / phiếu xuất.
+ * Dùng chung cho cả 2 loại phiếu.
  */
-public class ReceiptDetail {
+public class ReceiptDetailDTO {
 
-    private long id;
-    private long receiptId;
     private long productId;
-    private String productName;
+    private String productName; // chỉ để hiển thị trên bảng chi tiết của form
     private int quantity;
     private BigDecimal unitPrice;
+
+    public ReceiptDetailDTO() {
+    }
+
+    public ReceiptDetailDTO(long productId, String productName, int quantity, BigDecimal unitPrice) {
+        this.productId = productId;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
 
     public BigDecimal getSubtotal() {
         if (unitPrice == null) {
             return BigDecimal.ZERO;
         }
         return unitPrice.multiply(BigDecimal.valueOf(quantity));
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getReceiptId() {
-        return receiptId;
-    }
-
-    public void setReceiptId(long receiptId) {
-        this.receiptId = receiptId;
     }
 
     public long getProductId() {

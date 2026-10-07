@@ -4,5 +4,6 @@ module com.team.warehouse.warehousemanagementoop {
     requires java.sql;
 
     opens com.team.warehouse.warehousemanagementoop.controller to javafx.fxml;
+    opens com.team.warehouse.warehousemanagementoop.entity to javafx.base;
     exports com.team.warehouse.warehousemanagementoop;
 }
