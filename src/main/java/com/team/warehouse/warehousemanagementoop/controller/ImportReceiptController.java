@@ -11,7 +11,6 @@ import com.team.warehouse.warehousemanagementoop.exception.DataAccessException;
 import com.team.warehouse.warehousemanagementoop.service.ImportService;
 import com.team.warehouse.warehousemanagementoop.util.AlertHelper;
 import com.team.warehouse.warehousemanagementoop.util.SessionManager;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,7 +61,7 @@ public class ImportReceiptController implements Initializable {
     @FXML private Button searchButton;
     @FXML private Button addButton;
     @FXML private TableView<ImportReceipt> importTableView;
-    @FXML private TableColumn<ImportReceipt, Long> idColumn;
+    @FXML private TableColumn<ImportReceipt, String> idColumn;
     @FXML private TableColumn<ImportReceipt, String> dateColumn;
     @FXML private TableColumn<ImportReceipt, String> supplierColumn;
     @FXML private TableColumn<ImportReceipt, String> createdByColumn;
@@ -105,7 +104,7 @@ public class ImportReceiptController implements Initializable {
     // =====================================================================
 
     private void initListView() {
-        idColumn.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getId()));
+        idColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDisplayCode()));
         dateColumn.setCellValueFactory(c -> new SimpleStringProperty(formatDate(c.getValue().getCreatedDate())));
         supplierColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getPartnerName()));
         createdByColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getCreatedByName()));
@@ -169,11 +168,11 @@ public class ImportReceiptController implements Initializable {
         try {
             ImportReceipt receipt = importService.findById(row.getId());
             if (receipt == null) {
-                AlertHelper.showError("Lỗi", "Không tìm thấy phiếu nhập #" + row.getId());
+                AlertHelper.showError("Lỗi", "Không tìm thấy phiếu nhập " + row.getDisplayCode());
                 return;
             }
             StringBuilder sb = new StringBuilder();
-            sb.append("Phiếu nhập #").append(receipt.getId()).append("\n");
+            sb.append("Phiếu nhập ").append(receipt.getDisplayCode()).append("\n");
             sb.append("Nhà cung cấp: ").append(receipt.getPartnerName()).append("\n");
             sb.append("Ghi chú: ").append(receipt.getNote() == null ? "" : receipt.getNote()).append("\n\n");
             for (ReceiptDetail detail : receipt.getDetails()) {
@@ -304,7 +303,7 @@ public class ImportReceiptController implements Initializable {
 
         try {
             ImportReceipt receipt = importService.createImportReceipt(dto);
-            AlertHelper.showInfo("Thành công", "Đã lưu phiếu nhập #" + receipt.getId());
+            AlertHelper.showInfo("Thành công", "Đã lưu phiếu nhập " + receipt.getDisplayCode());
             closeDialog();
         } catch (IllegalArgumentException e) {
             AlertHelper.showError("Dữ liệu không hợp lệ", e.getMessage());

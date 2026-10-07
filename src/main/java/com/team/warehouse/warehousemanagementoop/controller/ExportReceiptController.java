@@ -12,7 +12,6 @@ import com.team.warehouse.warehousemanagementoop.exception.InsufficientStockExce
 import com.team.warehouse.warehousemanagementoop.service.ExportService;
 import com.team.warehouse.warehousemanagementoop.util.AlertHelper;
 import com.team.warehouse.warehousemanagementoop.util.SessionManager;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -63,7 +62,7 @@ public class ExportReceiptController implements Initializable {
     @FXML private Button searchButton;
     @FXML private Button addButton;
     @FXML private TableView<ExportReceipt> exportTableView;
-    @FXML private TableColumn<ExportReceipt, Long> idColumn;
+    @FXML private TableColumn<ExportReceipt, String> idColumn;
     @FXML private TableColumn<ExportReceipt, String> dateColumn;
     @FXML private TableColumn<ExportReceipt, String> customerColumn;
     @FXML private TableColumn<ExportReceipt, String> createdByColumn;
@@ -106,7 +105,7 @@ public class ExportReceiptController implements Initializable {
     // =====================================================================
 
     private void initListView() {
-        idColumn.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getId()));
+        idColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDisplayCode()));
         dateColumn.setCellValueFactory(c -> new SimpleStringProperty(formatDate(c.getValue().getCreatedDate())));
         customerColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getPartnerName()));
         createdByColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getCreatedByName()));
@@ -170,11 +169,11 @@ public class ExportReceiptController implements Initializable {
         try {
             ExportReceipt receipt = exportService.findById(row.getId());
             if (receipt == null) {
-                AlertHelper.showError("Lỗi", "Không tìm thấy phiếu xuất #" + row.getId());
+                AlertHelper.showError("Lỗi", "Không tìm thấy phiếu xuất " + row.getDisplayCode());
                 return;
             }
             StringBuilder sb = new StringBuilder();
-            sb.append("Phiếu xuất #").append(receipt.getId()).append("\n");
+            sb.append("Phiếu xuất ").append(receipt.getDisplayCode()).append("\n");
             sb.append("Khách hàng: ").append(receipt.getPartnerName()).append("\n");
             sb.append("Ghi chú: ").append(receipt.getNote() == null ? "" : receipt.getNote()).append("\n\n");
             for (ReceiptDetail detail : receipt.getDetails()) {
@@ -310,7 +309,7 @@ public class ExportReceiptController implements Initializable {
 
         try {
             ExportReceipt receipt = exportService.createExportReceipt(dto);
-            AlertHelper.showInfo("Thành công", "Đã lưu phiếu xuất #" + receipt.getId());
+            AlertHelper.showInfo("Thành công", "Đã lưu phiếu xuất " + receipt.getDisplayCode());
             closeDialog();
         } catch (IllegalArgumentException e) {
             AlertHelper.showError("Dữ liệu không hợp lệ", e.getMessage());

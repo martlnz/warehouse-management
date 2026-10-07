@@ -18,6 +18,10 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Thao tác trên bảng stock_receipts (lọc receipt_type = 'EXPORT') và receipt_details.
@@ -26,13 +30,16 @@ import java.util.List;
 public class ExportReceiptDAO {
 
     private static final String SELECT_RECEIPT =
-            "SELECT r.id, r.created_date, r.note, r.status, "
+            "SELECT r.id, r.receipt_code, r.created_date, r.note, r.status, "
                     + "u.id AS user_id, COALESCE(u.full_name, u.username) AS user_name, "
                     + "c.id AS customer_id, c.name AS customer_name "
                     + "FROM stock_receipts r "
                     + "LEFT JOIN users u ON r.created_by = u.id "
                     + "LEFT JOIN customers c ON r.customer_id = c.id "
                     + "WHERE r.receipt_type = 'EXPORT' ";
+
+    /** Tiền tố mã phiếu: XK001, XK002, ... (đánh số riêng cho phiếu xuất). */
+    private static final String CODE_PREFIX = "XK";
 
     private static final String ORDER_BY = " ORDER BY r.created_date DESC, r.id DESC";
 
@@ -79,20 +86,23 @@ public class ExportReceiptDAO {
 
     /**
      * Lưu phiếu xuất + các dòng chi tiết (chưa trừ tồn kho - việc đó do Service gọi ProductDAO).
-     * Trả về mã phiếu vừa tạo.
+     * Mã hiển thị (XK001, XK002, ...) được sinh ngay trong hàm này, cùng transaction với việc lưu phiếu.
+     * Trả về id (khóa chính) của phiếu vừa tạo.
      */
     public long insert(Connection conn, ExportReceiptDTO dto) throws DataAccessException {
-        String sqlReceipt = "INSERT INTO stock_receipts (receipt_type, created_by, customer_id, note, status) "
-                + "VALUES ('EXPORT', ?, ?, ?, ?)";
+        String sqlReceipt = "INSERT INTO stock_receipts (receipt_type, receipt_code, created_by, customer_id, note, status) "
+                + "VALUES ('EXPORT', ?, ?, ?, ?, ?)";
         String sqlDetail = "INSERT INTO receipt_details (receipt_id, product_id, quantity, unit_price) "
                 + "VALUES (?, ?, ?, ?)";
         try {
+            String code = nextCode(conn);
             long receiptId;
             try (PreparedStatement stmt = conn.prepareStatement(sqlReceipt, Statement.RETURN_GENERATED_KEYS)) {
-                stmt.setLong(1, dto.getCreatedById());
-                stmt.setLong(2, dto.getCustomerId());
-                stmt.setString(3, dto.getNote());
-                stmt.setString(4, StockReceipt.STATUS_COMPLETED);
+                stmt.setString(1, code);
+                stmt.setLong(2, dto.getCreatedById());
+                stmt.setLong(3, dto.getCustomerId());
+                stmt.setString(4, dto.getNote());
+                stmt.setString(5, StockReceipt.STATUS_COMPLETED);
                 stmt.executeUpdate();
                 try (ResultSet keys = stmt.getGeneratedKeys()) {
                     if (!keys.next()) {
@@ -114,6 +124,22 @@ public class ExportReceiptDAO {
             return receiptId;
         } catch (SQLException e) {
             throw new DataAccessException("Lỗi khi lưu phiếu xuất", e);
+        }
+    }
+
+    /**
+     * Sinh mã phiếu xuất tiếp theo: XK001, XK002, ... (lấy số lớn nhất hiện có + 1).
+     * Câu SELECT khóa các phiếu xuất đến khi commit/rollback, nên 2 người tạo phiếu cùng lúc không bị trùng mã;
+     * nếu lưu thất bại và rollback thì số đó được dùng lại, không bị hụt số.
+     * Quá 999 thì tự dài ra (XK1000, ...).
+     */
+    private String nextCode(Connection conn) throws SQLException {
+        String sql = "SELECT ISNULL(MAX(TRY_CAST(SUBSTRING(receipt_code, " + (CODE_PREFIX.length() + 1) + ", 20) AS INT)), 0) + 1 "
+                + "FROM stock_receipts WITH (UPDLOCK, HOLDLOCK) WHERE receipt_type = 'EXPORT'";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            rs.next();
+            return String.format("%s%03d", CODE_PREFIX, rs.getInt(1));
         }
     }
 
@@ -162,6 +188,7 @@ public class ExportReceiptDAO {
     private ExportReceipt mapRow(ResultSet rs) throws SQLException {
         ExportReceipt receipt = new ExportReceipt();
         receipt.setId(rs.getLong("id"));
+        receipt.setCode(rs.getString("receipt_code"));
         Timestamp createdDate = rs.getTimestamp("created_date");
         if (createdDate != null) {
             receipt.setCreatedDate(createdDate.toLocalDateTime());
@@ -179,5 +206,34 @@ public class ExportReceiptDAO {
         customer.setName(rs.getString("customer_name"));
         receipt.setCustomer(customer);
         return receipt;
+    }
+
+    /**
+     * Thống kê tổng số lượng sản phẩm xuất kho theo từng tháng, tính từ một ngày chỉ định.
+     */
+    public Map<YearMonth, Integer> sumQuantityByMonth(LocalDate startDate) throws DataAccessException {
+        String sql = "SELECT YEAR(r.created_date) AS yr, MONTH(r.created_date) AS mn, SUM(d.quantity) AS total "
+                + "FROM stock_receipts r "
+                + "JOIN receipt_details d ON r.id = d.receipt_id "
+                + "WHERE r.receipt_type = 'EXPORT' AND r.status = 'COMPLETED' AND r.created_date >= ? "
+                + "GROUP BY YEAR(r.created_date), MONTH(r.created_date)";
+
+        Map<YearMonth, Integer> result = new HashMap<>();
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Chuyển từ java.time.LocalDate sang java.sql.Date
+            stmt.setDate(1, java.sql.Date.valueOf(startDate));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    YearMonth month = YearMonth.of(rs.getInt("yr"), rs.getInt("mn"));
+                    result.put(month, rs.getInt("total"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Lỗi khi thống kê số lượng xuất theo tháng", e);
+        }
+        return result;
     }
 }
