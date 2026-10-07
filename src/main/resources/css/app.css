@@ -24,85 +24,85 @@
   0. BẢNG MÀU & BIẾN GỐC — muốn đổi tông màu cả app, chỉ sửa khối này
   ========================================================================== */
 .root {
-    -c-ink:           #0B3B47;   /* xanh petrol đậm: tooltip, tiêu đề trang */
-    -c-ink-hover:     rgba(255, 255, 255, 0.10);   /* menu sidebar khi rê chuột */
-    -c-ink-active:    rgba(255, 255, 255, 0.18);   /* menu sidebar đang chọn */
-    -c-ink-text:      #C4E4EA;   /* chữ mờ trên nền sidebar */
+   -c-ink:           #0B3B47;   /* xanh petrol đậm: tooltip, tiêu đề trang */
+   -c-ink-hover:     rgba(255, 255, 255, 0.10);   /* menu sidebar khi rê chuột */
+   -c-ink-active:    rgba(255, 255, 255, 0.18);   /* menu sidebar đang chọn */
+   -c-ink-text:      #C4E4EA;   /* chữ mờ trên nền sidebar */
 
 
-    -c-primary:        #0E7C8F;  /* màu chính: nút, viền focus, tiêu đề bảng */
-    -c-primary-dark:   #0A6272;
-    -c-primary-bright: #17A2B8;  /* xanh ngọc sáng: dải màu, thanh tiến trình */
-    -c-primary-tint:   #D3EDF2;  /* nền dòng được chọn */
-    -c-accent:         #FFB020;  /* vàng cam: nút nổi bật, mục menu đang chọn */
+   -c-primary:        #0E7C8F;  /* màu chính: nút, viền focus, tiêu đề bảng */
+   -c-primary-dark:   #0A6272;
+   -c-primary-bright: #17A2B8;  /* xanh ngọc sáng: dải màu, thanh tiến trình */
+   -c-primary-tint:   #D3EDF2;  /* nền dòng được chọn */
+   -c-accent:         #FFB020;  /* vàng cam: nút nổi bật, mục menu đang chọn */
 
 
-    /* Bộ màu phụ — thẻ số liệu, nhãn, biểu đồ */
-    -c-blue:          #2563EB;
-    -c-blue-tint:     #E1EBFD;
-    -c-purple:        #6D28D9;
-    -c-purple-tint:   #EBE3FB;
-    -c-orange:        #EA580C;
-    -c-orange-tint:   #FFE8D9;
+   /* Bộ màu phụ — thẻ số liệu, nhãn, biểu đồ */
+   -c-blue:          #2563EB;
+   -c-blue-tint:     #E1EBFD;
+   -c-purple:        #6D28D9;
+   -c-purple-tint:   #EBE3FB;
+   -c-orange:        #EA580C;
+   -c-orange-tint:   #FFE8D9;
 
 
-    -c-bg:            #E8F2F4;   /* nền vùng nội dung (xanh ngọc rất nhạt) */
-    -c-surface:       #FFFFFF;   /* nền thẻ, bảng, ô nhập */
-    -c-line:          #CDDDE2;   /* viền thẻ / bảng */
-    -c-line-soft:     #E0EBEE;   /* đường kẻ giữa các dòng */
-    -c-control-line:  #B7CAD1;   /* viền ô nhập, nút */
-    -c-hover:         #E4F3F6;
+   -c-bg:            #E8F2F4;   /* nền vùng nội dung (xanh ngọc rất nhạt) */
+   -c-surface:       #FFFFFF;   /* nền thẻ, bảng, ô nhập */
+   -c-line:          #CDDDE2;   /* viền thẻ / bảng */
+   -c-line-soft:     #E0EBEE;   /* đường kẻ giữa các dòng */
+   -c-control-line:  #B7CAD1;   /* viền ô nhập, nút */
+   -c-hover:         #E4F3F6;
 
 
-    -c-text:          #14282E;
-    -c-muted:         #55707A;
-    -c-placeholder:   #8AA0A8;
+   -c-text:          #14282E;
+   -c-muted:         #55707A;
+   -c-placeholder:   #8AA0A8;
 
 
-    -c-danger:        #DC2626;
-    -c-danger-tint:   #FDE4E4;
-    -c-success:       #15803D;
-    -c-success-tint:  #DDF3E4;
-    -c-warning:       #7A5000;
-    -c-warning-tint:  #FFF0C7;
+   -c-danger:        #DC2626;
+   -c-danger-tint:   #FDE4E4;
+   -c-success:       #15803D;
+   -c-success-tint:  #DDF3E4;
+   -c-warning:       #7A5000;
+   -c-warning-tint:  #FFF0C7;
 
 
-    /* Màu biểu đồ: ngọc, vàng cam, xanh dương, tím, san hô, xanh lá */
-    -c-chart-1: #0E7C8F;
-    -c-chart-2: #FFB020;
-    -c-chart-3: #2563EB;
-    -c-chart-4: #7C5CE0;
-    -c-chart-5: #EF5B5B;
-    -c-chart-6: #22B573;
+   /* Màu biểu đồ: ngọc, vàng cam, xanh dương, tím, san hô, xanh lá */
+   -c-chart-1: #0E7C8F;
+   -c-chart-2: #FFB020;
+   -c-chart-3: #2563EB;
+   -c-chart-4: #7C5CE0;
+   -c-chart-5: #EF5B5B;
+   -c-chart-6: #22B573;
 
 
-    /* Ghi đè biến của theme Modena để popup, menu, dialog... đổi theo */
-    -fx-base: #DCEAEE;
-    -fx-accent: -c-primary;
-    -fx-focus-color: -c-primary;
-    -fx-faint-focus-color: rgba(14, 124, 143, 0.22);
-    -fx-control-inner-background: -c-surface;
-    -fx-control-inner-background-alt: -c-surface;
-    -fx-selection-bar: -c-primary-tint;
-    -fx-selection-bar-non-focused: -c-primary-tint;
-    -fx-selection-bar-text: -c-text;
-    -fx-text-base-color: -c-text;
-    -fx-dark-text-color: -c-text;
+   /* Ghi đè biến của theme Modena để popup, menu, dialog... đổi theo */
+   -fx-base: #DCEAEE;
+   -fx-accent: -c-primary;
+   -fx-focus-color: -c-primary;
+   -fx-faint-focus-color: rgba(14, 124, 143, 0.22);
+   -fx-control-inner-background: -c-surface;
+   -fx-control-inner-background-alt: -c-surface;
+   -fx-selection-bar: -c-primary-tint;
+   -fx-selection-bar-non-focused: -c-primary-tint;
+   -fx-selection-bar-text: -c-text;
+   -fx-text-base-color: -c-text;
+   -fx-dark-text-color: -c-text;
 
 
-    /* Font: Segoe UI có sẵn trên Windows, hiển thị tiếng Việt rất tốt.
-       Máy không có font này sẽ tự dùng font hệ thống. */
-    -fx-font-family: "Segoe UI";
-    -fx-font-size: 13px;
-    -fx-background-color: -c-bg;
+   /* Font: Segoe UI có sẵn trên Windows, hiển thị tiếng Việt rất tốt.
+      Máy không có font này sẽ tự dùng font hệ thống. */
+   -fx-font-family: "Segoe UI";
+   -fx-font-size: 13px;
+   -fx-background-color: -c-bg;
 }
 
 
 .label {
-    -fx-text-fill: -c-text;
+   -fx-text-fill: -c-text;
 }
 .text-muted {
-    -fx-text-fill: -c-muted;
+   -fx-text-fill: -c-muted;
 }
 
 
@@ -120,159 +120,159 @@
     btn-sm       nút nhỏ trong ô bảng (Sửa / Xóa từng dòng)
   ========================================================================== */
 .button {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 6;
-    -fx-border-color: -c-control-line;
-    -fx-border-width: 1;
-    -fx-border-radius: 6;
-    -fx-text-fill: -c-primary-dark;
-    -fx-padding: 7 16;
-    -fx-cursor: hand;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 6;
+   -fx-border-color: -c-control-line;
+   -fx-border-width: 1;
+   -fx-border-radius: 6;
+   -fx-text-fill: -c-primary-dark;
+   -fx-padding: 7 16;
+   -fx-cursor: hand;
 }
 .button:hover {
-    -fx-background-color: -c-primary-tint;
-    -fx-border-color: -c-primary;
+   -fx-background-color: -c-primary-tint;
+   -fx-border-color: -c-primary;
 }
 .button:armed {
-    -fx-background-color: #BFE3EA;
+   -fx-background-color: #BFE3EA;
 }
 .button:focused {
-    -fx-border-color: -c-primary;
+   -fx-border-color: -c-primary;
 }
 .button:disabled {
-    -fx-opacity: 0.45;
+   -fx-opacity: 0.45;
 }
 
 
 /* Nút chính */
 .button.btn-primary,
 .button:default {
-    -fx-background-color: linear-gradient(to bottom, #0E7C8F, #0A6272);
-    -fx-border-color: #0A6272;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(14, 124, 143, 0.35), 8, 0, 0, 2);
+   -fx-background-color: linear-gradient(to bottom, #0E7C8F, #0A6272);
+   -fx-border-color: #0A6272;
+   -fx-text-fill: white;
+   -fx-font-weight: bold;
+   -fx-effect: dropshadow(gaussian, rgba(14, 124, 143, 0.35), 8, 0, 0, 2);
 }
 .button.btn-primary:hover,
 .button:default:hover {
-    -fx-background-color: linear-gradient(to bottom, #0B6E80, #085363);
-    -fx-border-color: #085363;
-    -fx-effect: dropshadow(gaussian, rgba(14, 124, 143, 0.55), 10, 0, 0, 3);
+   -fx-background-color: linear-gradient(to bottom, #0B6E80, #085363);
+   -fx-border-color: #085363;
+   -fx-effect: dropshadow(gaussian, rgba(14, 124, 143, 0.55), 10, 0, 0, 3);
 }
 .button.btn-primary:armed,
 .button:default:armed {
-    -fx-background-color: #084553;
-    -fx-border-color: #084553;
+   -fx-background-color: #084553;
+   -fx-border-color: #084553;
 }
 .button.btn-primary:focused,
 .button:default:focused {
-    -fx-border-color: -c-ink;
+   -fx-border-color: -c-ink;
 }
 
 
 /* Nút nổi bật (vàng cam, chữ tối) */
 .button.btn-accent {
-    -fx-background-color: linear-gradient(to bottom, #FFC547, #FFB020);
-    -fx-border-color: #E89B0C;
-    -fx-text-fill: #3B2300;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(255, 176, 32, 0.45), 8, 0, 0, 2);
+   -fx-background-color: linear-gradient(to bottom, #FFC547, #FFB020);
+   -fx-border-color: #E89B0C;
+   -fx-text-fill: #3B2300;
+   -fx-font-weight: bold;
+   -fx-effect: dropshadow(gaussian, rgba(255, 176, 32, 0.45), 8, 0, 0, 2);
 }
 .button.btn-accent:hover {
-    -fx-background-color: linear-gradient(to bottom, #FFD067, #FFBC3A);
-    -fx-border-color: #E89B0C;
+   -fx-background-color: linear-gradient(to bottom, #FFD067, #FFBC3A);
+   -fx-border-color: #E89B0C;
 }
 .button.btn-accent:armed {
-    -fx-background-color: #F2A20F;
+   -fx-background-color: #F2A20F;
 }
 
 
 /* Nút xác nhận (xanh lá) */
 .button.btn-success {
-    -fx-background-color: linear-gradient(to bottom, #1A8F49, #15803D);
-    -fx-border-color: #126B33;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(21, 128, 61, 0.35), 8, 0, 0, 2);
+   -fx-background-color: linear-gradient(to bottom, #1A8F49, #15803D);
+   -fx-border-color: #126B33;
+   -fx-text-fill: white;
+   -fx-font-weight: bold;
+   -fx-effect: dropshadow(gaussian, rgba(21, 128, 61, 0.35), 8, 0, 0, 2);
 }
 .button.btn-success:hover {
-    -fx-background-color: linear-gradient(to bottom, #15803D, #0F6A31);
-    -fx-border-color: #0F6A31;
+   -fx-background-color: linear-gradient(to bottom, #15803D, #0F6A31);
+   -fx-border-color: #0F6A31;
 }
 .button.btn-success:armed {
-    -fx-background-color: #0D5A29;
+   -fx-background-color: #0D5A29;
 }
 
 
 /* Nút thông tin (xanh dương) */
 .button.btn-info {
-    -fx-background-color: linear-gradient(to bottom, #2F6FDE, #2563EB);
-    -fx-border-color: #1D4ED8;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.35), 8, 0, 0, 2);
+   -fx-background-color: linear-gradient(to bottom, #2F6FDE, #2563EB);
+   -fx-border-color: #1D4ED8;
+   -fx-text-fill: white;
+   -fx-font-weight: bold;
+   -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.35), 8, 0, 0, 2);
 }
 .button.btn-info:hover {
-    -fx-background-color: linear-gradient(to bottom, #2563EB, #1D4ED8);
-    -fx-border-color: #1D4ED8;
+   -fx-background-color: linear-gradient(to bottom, #2563EB, #1D4ED8);
+   -fx-border-color: #1D4ED8;
 }
 .button.btn-info:armed {
-    -fx-background-color: #1B45BD;
+   -fx-background-color: #1B45BD;
 }
 
 
 /* Nút nguy hiểm (nền hồng nhạt, hover mới đổ đỏ đặc) */
 .button.btn-danger {
-    -fx-background-color: #FFF3F3;
-    -fx-text-fill: -c-danger;
-    -fx-border-color: #F0B4B4;
+   -fx-background-color: #FFF3F3;
+   -fx-text-fill: -c-danger;
+   -fx-border-color: #F0B4B4;
 }
 .button.btn-danger:hover {
-    -fx-background-color: -c-danger;
-    -fx-border-color: -c-danger;
-    -fx-text-fill: white;
+   -fx-background-color: -c-danger;
+   -fx-border-color: -c-danger;
+   -fx-text-fill: white;
 }
 .button.btn-danger:armed {
-    -fx-background-color: #B91C1C;
-    -fx-border-color: #B91C1C;
+   -fx-background-color: #B91C1C;
+   -fx-border-color: #B91C1C;
 }
 
 
 /* Nút chỉ có chữ: Hủy, Xem chi tiết */
 .button.btn-ghost {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-text-fill: -c-primary;
+   -fx-background-color: transparent;
+   -fx-border-color: transparent;
+   -fx-text-fill: -c-primary;
 }
 .button.btn-ghost:hover {
-    -fx-background-color: -c-primary-tint;
-    -fx-border-color: transparent;
+   -fx-background-color: -c-primary-tint;
+   -fx-border-color: transparent;
 }
 
 
 /* Nút nhỏ trong ô bảng: nền màu nhạt, hover đổ màu đặc */
 .button.btn-sm {
-    -fx-padding: 4 10;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-background-color: -c-primary-tint;
-    -fx-border-color: transparent;
-    -fx-text-fill: -c-primary-dark;
+   -fx-padding: 4 10;
+   -fx-font-size: 12px;
+   -fx-font-weight: bold;
+   -fx-background-color: -c-primary-tint;
+   -fx-border-color: transparent;
+   -fx-text-fill: -c-primary-dark;
 }
 .button.btn-sm:hover {
-    -fx-background-color: -c-primary;
-    -fx-border-color: transparent;
-    -fx-text-fill: white;
+   -fx-background-color: -c-primary;
+   -fx-border-color: transparent;
+   -fx-text-fill: white;
 }
 .button.btn-sm.btn-danger {
-    -fx-background-color: -c-danger-tint;
-    -fx-border-color: transparent;
-    -fx-text-fill: -c-danger;
+   -fx-background-color: -c-danger-tint;
+   -fx-border-color: transparent;
+   -fx-text-fill: -c-danger;
 }
 .button.btn-sm.btn-danger:hover {
-    -fx-background-color: -c-danger;
-    -fx-text-fill: white;
+   -fx-background-color: -c-danger;
+   -fx-text-fill: white;
 }
 
 
@@ -284,170 +284,170 @@
   (field.getStyleClass().add("invalid")) và hiện thông báo bằng Label "error-text".
   ========================================================================== */
 .text-input {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 6;
-    -fx-border-color: -c-control-line;
-    -fx-border-width: 1;
-    -fx-border-radius: 6;
-    -fx-padding: 8 12;
-    -fx-text-fill: -c-text;
-    -fx-prompt-text-fill: -c-placeholder;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 6;
+   -fx-border-color: -c-control-line;
+   -fx-border-width: 1;
+   -fx-border-radius: 6;
+   -fx-padding: 8 12;
+   -fx-text-fill: -c-text;
+   -fx-prompt-text-fill: -c-placeholder;
 }
 .text-input:focused {
-    -fx-background-color: rgba(14, 124, 143, 0.22), -c-surface;
-    -fx-background-insets: -3, 0;
-    -fx-background-radius: 9, 6;
-    -fx-border-color: -c-primary;
+   -fx-background-color: rgba(14, 124, 143, 0.22), -c-surface;
+   -fx-background-insets: -3, 0;
+   -fx-background-radius: 9, 6;
+   -fx-border-color: -c-primary;
 }
 .text-input:disabled {
-    -fx-background-color: #F1F4F5;
-    -fx-opacity: 0.7;
+   -fx-background-color: #F1F4F5;
+   -fx-opacity: 0.7;
 }
 .text-input.invalid {
-    -fx-border-color: -c-danger;
+   -fx-border-color: -c-danger;
 }
 .text-input.invalid:focused {
-    -fx-background-color: rgba(220, 38, 38, 0.18), -c-surface;
+   -fx-background-color: rgba(220, 38, 38, 0.18), -c-surface;
 }
 
 
 .text-area {
-    -fx-padding: 0;
+   -fx-padding: 0;
 }
 .text-area .content {
-    -fx-padding: 8 12;
-    -fx-background-color: transparent;
+   -fx-padding: 8 12;
+   -fx-background-color: transparent;
 }
 .text-area > .scroll-pane,
 .text-area > .scroll-pane > .viewport {
-    -fx-background-color: transparent;
+   -fx-background-color: transparent;
 }
 
 
 .error-text {
-    -fx-text-fill: -c-danger;
-    -fx-font-size: 12px;
+   -fx-text-fill: -c-danger;
+   -fx-font-size: 12px;
 }
 .form-label {
-    -fx-font-weight: bold;
-    -fx-text-fill: -c-ink;
+   -fx-font-weight: bold;
+   -fx-text-fill: -c-ink;
 }
 .form-grid {
-    -fx-hgap: 16;
-    -fx-vgap: 14;
+   -fx-hgap: 16;
+   -fx-vgap: 14;
 }
 
 
 /* --- ComboBox / DatePicker --- */
 .combo-box-base {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 6;
-    -fx-border-color: -c-control-line;
-    -fx-border-width: 1;
-    -fx-border-radius: 6;
-    -fx-cursor: hand;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 6;
+   -fx-border-color: -c-control-line;
+   -fx-border-width: 1;
+   -fx-border-radius: 6;
+   -fx-cursor: hand;
 }
 .combo-box-base:hover {
-    -fx-border-color: #A9B9BF;
+   -fx-border-color: #A9B9BF;
 }
 .combo-box-base:focused,
 .combo-box-base:showing {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-border-color: -c-primary;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-border-color: -c-primary;
 }
 .combo-box-base.invalid {
-    -fx-border-color: -c-danger;
+   -fx-border-color: -c-danger;
 }
 .combo-box-base > .arrow-button {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-padding: 0 12 0 6;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-padding: 0 12 0 6;
 }
 .combo-box-base > .arrow-button > .arrow {
-    -fx-background-color: -c-muted;
+   -fx-background-color: -c-muted;
 }
 .combo-box > .list-cell {
-    -fx-background-color: transparent;
-    -fx-padding: 8 0 8 12;
+   -fx-background-color: transparent;
+   -fx-padding: 8 0 8 12;
 }
 /* Ô nhập bên trong DatePicker: bỏ viền để không bị viền đôi */
 .combo-box-base > .text-field,
 .combo-box-base > .text-field:focused {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-border-color: transparent;
-    -fx-padding: 8 0 8 12;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-border-color: transparent;
+   -fx-padding: 8 0 8 12;
 }
 
 
 /* Danh sách xổ xuống + mọi ListView */
 .combo-box-popup > .list-view {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 8;
-    -fx-border-color: -c-line;
-    -fx-border-radius: 8;
-    -fx-padding: 4;
-    -fx-effect: dropshadow(gaussian, rgba(18, 38, 45, 0.18), 14, 0, 0, 4);
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 8;
+   -fx-border-color: -c-line;
+   -fx-border-radius: 8;
+   -fx-padding: 4;
+   -fx-effect: dropshadow(gaussian, rgba(18, 38, 45, 0.18), 14, 0, 0, 4);
 }
 .list-view .list-cell {
-    -fx-background-color: transparent;
-    -fx-background-radius: 4;
-    -fx-padding: 7 10;
-    -fx-text-fill: -c-text;
+   -fx-background-color: transparent;
+   -fx-background-radius: 4;
+   -fx-padding: 7 10;
+   -fx-text-fill: -c-text;
 }
 .list-view .list-cell:filled:hover {
-    -fx-background-color: -c-hover;
+   -fx-background-color: -c-hover;
 }
 .list-view .list-cell:filled:selected,
 .list-view .list-cell:filled:selected:hover {
-    -fx-background-color: -c-primary-tint;
-    -fx-text-fill: -c-text;
+   -fx-background-color: -c-primary-tint;
+   -fx-text-fill: -c-text;
 }
 
 
 .date-picker-popup {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 8;
-    -fx-border-color: -c-line;
-    -fx-border-radius: 8;
-    -fx-effect: dropshadow(gaussian, rgba(18, 38, 45, 0.18), 14, 0, 0, 4);
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 8;
+   -fx-border-color: -c-line;
+   -fx-border-radius: 8;
+   -fx-effect: dropshadow(gaussian, rgba(18, 38, 45, 0.18), 14, 0, 0, 4);
 }
 .date-picker-popup .day-cell:hover {
-    -fx-background-color: -c-hover;
+   -fx-background-color: -c-hover;
 }
 .date-picker-popup .day-cell:selected {
-    -fx-background-color: -c-primary;
-    -fx-text-fill: white;
+   -fx-background-color: -c-primary;
+   -fx-text-fill: white;
 }
 
 
 /* --- CheckBox --- */
 .check-box {
-    -fx-text-fill: -c-text;
+   -fx-text-fill: -c-text;
 }
 .check-box > .box {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 4;
-    -fx-border-color: #9FB0B6;
-    -fx-border-radius: 4;
-    -fx-padding: 3;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 4;
+   -fx-border-color: #9FB0B6;
+   -fx-border-radius: 4;
+   -fx-padding: 3;
 }
 .check-box:hover > .box {
-    -fx-border-color: -c-primary;
+   -fx-border-color: -c-primary;
 }
 .check-box:selected > .box {
-    -fx-background-color: -c-primary;
-    -fx-border-color: -c-primary;
+   -fx-background-color: -c-primary;
+   -fx-border-color: -c-primary;
 }
 .check-box:selected > .box > .mark {
-    -fx-background-color: white;
-    -fx-background-insets: 0;
+   -fx-background-color: white;
+   -fx-background-insets: 0;
 }
 
 
@@ -455,170 +455,170 @@
 
 /* --- ChoiceBox --- */
 .choice-box {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 6;
-    -fx-border-color: -c-control-line;
-    -fx-border-width: 1;
-    -fx-border-radius: 6;
-    -fx-padding: 0;
-    -fx-cursor: hand;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 6;
+   -fx-border-color: -c-control-line;
+   -fx-border-width: 1;
+   -fx-border-radius: 6;
+   -fx-padding: 0;
+   -fx-cursor: hand;
 }
 .choice-box:hover {
-    -fx-border-color: #A9B9BF;
+   -fx-border-color: #A9B9BF;
 }
 .choice-box:focused,
 .choice-box:showing {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-border-color: -c-primary;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-border-color: -c-primary;
 }
 .choice-box > .label {
-    -fx-padding: 8 0 8 12;
+   -fx-padding: 8 0 8 12;
 }
 .choice-box > .open-button {
-    -fx-padding: 0 12 0 6;
+   -fx-padding: 0 12 0 6;
 }
 .choice-box > .open-button > .arrow {
-    -fx-background-color: -c-muted;
+   -fx-background-color: -c-muted;
 }
 
 
 /* --- Spinner (viền nằm ở khung ngoài, ô nhập bên trong không viền) --- */
 .spinner {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 6;
-    -fx-border-color: -c-control-line;
-    -fx-border-width: 1;
-    -fx-border-radius: 6;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 6;
+   -fx-border-color: -c-control-line;
+   -fx-border-width: 1;
+   -fx-border-radius: 6;
 }
 .spinner:focused {
-    -fx-border-color: -c-primary;
+   -fx-border-color: -c-primary;
 }
 .spinner > .text-field,
 .spinner > .text-field:focused {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-border-color: transparent;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-border-color: transparent;
 }
 .spinner > .increment-arrow-button,
 .spinner > .decrement-arrow-button {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-    -fx-border-color: transparent;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-background-radius: 0;
+   -fx-border-color: transparent;
 }
 .spinner > .increment-arrow-button:hover,
 .spinner > .decrement-arrow-button:hover {
-    -fx-background-color: -c-hover;
+   -fx-background-color: -c-hover;
 }
 .spinner .increment-arrow,
 .spinner .decrement-arrow {
-    -fx-background-color: -c-muted;
+   -fx-background-color: -c-muted;
 }
 
 
 /* --- ToggleButton (nút bật/tắt, VD: bộ lọc) --- */
 .toggle-button {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 6;
-    -fx-border-color: -c-control-line;
-    -fx-border-width: 1;
-    -fx-border-radius: 6;
-    -fx-text-fill: -c-text;
-    -fx-padding: 7 16;
-    -fx-cursor: hand;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 6;
+   -fx-border-color: -c-control-line;
+   -fx-border-width: 1;
+   -fx-border-radius: 6;
+   -fx-text-fill: -c-text;
+   -fx-padding: 7 16;
+   -fx-cursor: hand;
 }
 .toggle-button:hover {
-    -fx-background-color: #F2F6F7;
-    -fx-border-color: #A9B9BF;
+   -fx-background-color: #F2F6F7;
+   -fx-border-color: #A9B9BF;
 }
 .toggle-button:focused {
-    -fx-border-color: -c-primary;
+   -fx-border-color: -c-primary;
 }
 .toggle-button:selected {
-    -fx-background-color: -c-primary;
-    -fx-border-color: -c-primary;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
+   -fx-background-color: -c-primary;
+   -fx-border-color: -c-primary;
+   -fx-text-fill: white;
+   -fx-font-weight: bold;
 }
 
 
 /* --- RadioButton --- */
 .radio-button {
-    -fx-text-fill: -c-text;
+   -fx-text-fill: -c-text;
 }
 .radio-button > .radio {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 20;
-    -fx-border-color: #9FB0B6;
-    -fx-border-radius: 20;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 20;
+   -fx-border-color: #9FB0B6;
+   -fx-border-radius: 20;
 }
 .radio-button:hover > .radio,
 .radio-button:selected > .radio {
-    -fx-border-color: -c-primary;
+   -fx-border-color: -c-primary;
 }
 .radio-button > .radio > .dot {
-    -fx-background-color: transparent;
+   -fx-background-color: transparent;
 }
 .radio-button:selected > .radio > .dot {
-    -fx-background-color: -c-primary;
-    -fx-background-insets: 0;
+   -fx-background-color: -c-primary;
+   -fx-background-insets: 0;
 }
 
 
 /* --- TabPane (tab gạch chân; VD: Nhà cung cấp | Khách hàng) --- */
 .tab-pane {
-    -fx-tab-min-height: 38;
+   -fx-tab-min-height: 38;
 }
 .tab-pane > .tab-header-area > .tab-header-background {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-border-color: transparent transparent -c-line transparent;
-    -fx-border-width: 0 0 1 0;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-border-color: transparent transparent -c-line transparent;
+   -fx-border-width: 0 0 1 0;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-    -fx-border-color: transparent;
-    -fx-border-width: 0 0 2 0;
-    -fx-padding: 0 16;
-    -fx-cursor: hand;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-background-radius: 0;
+   -fx-border-color: transparent;
+   -fx-border-width: 0 0 2 0;
+   -fx-padding: 0 16;
+   -fx-cursor: hand;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
-    -fx-border-color: transparent transparent -c-primary transparent;
+   -fx-border-color: transparent transparent -c-primary transparent;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab .tab-label {
-    -fx-text-fill: -c-muted;
-    -fx-font-size: 14px;
+   -fx-text-fill: -c-muted;
+   -fx-font-size: 14px;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab:hover .tab-label {
-    -fx-text-fill: -c-text;
+   -fx-text-fill: -c-text;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {
-    -fx-text-fill: -c-primary-dark;
-    -fx-font-weight: bold;
+   -fx-text-fill: -c-primary-dark;
+   -fx-font-weight: bold;
 }
 .tab-pane > .tab-content-area {
-    -fx-background-color: transparent;
+   -fx-background-color: transparent;
 }
 
 
 /* --- ProgressBar (thanh mảnh, phẳng — dùng khi tải dữ liệu / import) --- */
 .progress-bar > .track {
-    -fx-background-color: -c-line-soft;
-    -fx-background-insets: 0;
-    -fx-background-radius: 4;
+   -fx-background-color: -c-line-soft;
+   -fx-background-insets: 0;
+   -fx-background-radius: 4;
 }
 .progress-bar > .bar {
-    -fx-background-color: linear-gradient(to right, -c-primary, -c-primary-bright);
-    -fx-background-insets: 0;
-    -fx-background-radius: 4;
-    -fx-padding: 4;
+   -fx-background-color: linear-gradient(to right, -c-primary, -c-primary-bright);
+   -fx-background-insets: 0;
+   -fx-background-radius: 4;
+   -fx-padding: 4;
 }
 
 
@@ -630,104 +630,104 @@
   vào TableColumn trong SceneBuilder. Cột giữa: "col-center".
   ========================================================================== */
 .table-view {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 8;
-    -fx-border-color: -c-line;
-    -fx-border-width: 1;
-    -fx-border-radius: 8;
-    -fx-padding: 1;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 8;
+   -fx-border-color: -c-line;
+   -fx-border-width: 1;
+   -fx-border-radius: 8;
+   -fx-padding: 1;
 }
 .table-view:focused {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 8;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 8;
 }
 
 
 .table-view .column-header-background {
-    -fx-background-color: linear-gradient(to bottom, #0E7C8F, #0A6272);
-    -fx-background-radius: 7 7 0 0;
-    -fx-border-color: transparent;
-    -fx-border-width: 0;
-    -fx-mark-color: white;
-    -fx-mark-highlight-color: transparent;
+   -fx-background-color: linear-gradient(to bottom, #0E7C8F, #0A6272);
+   -fx-background-radius: 7 7 0 0;
+   -fx-border-color: transparent;
+   -fx-border-width: 0;
+   -fx-mark-color: white;
+   -fx-mark-highlight-color: transparent;
 }
 .table-view .column-header,
 .table-view .filler {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-border-color: transparent;
-    -fx-size: 40px;
-    -fx-padding: 0;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-border-color: transparent;
+   -fx-size: 40px;
+   -fx-padding: 0;
 }
 .table-view .column-header .label {
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 0 12;
+   -fx-text-fill: white;
+   -fx-font-weight: bold;
+   -fx-alignment: CENTER_LEFT;
+   -fx-padding: 0 12;
 }
 .table-view .column-header.col-number .label {
-    -fx-alignment: CENTER_RIGHT;
+   -fx-alignment: CENTER_RIGHT;
 }
 .table-view .column-header.col-center .label {
-    -fx-alignment: CENTER;
+   -fx-alignment: CENTER;
 }
 
 
 .table-row-cell {
-    -fx-cell-size: 40px;
-    -fx-padding: 0;
-    -fx-background-color: -c-line-soft, -c-surface;
-    -fx-background-insets: 0, 0 0 1 0;
+   -fx-cell-size: 40px;
+   -fx-padding: 0;
+   -fx-background-color: -c-line-soft, -c-surface;
+   -fx-background-insets: 0, 0 0 1 0;
 }
 .table-row-cell:odd {
-    -fx-background-color: -c-line-soft, #F3F9FA;
+   -fx-background-color: -c-line-soft, #F3F9FA;
 }
 .table-row-cell:filled:hover {
-    -fx-background-color: -c-line-soft, #DDF0F4;
+   -fx-background-color: -c-line-soft, #DDF0F4;
 }
 .table-row-cell:filled:selected,
 .table-row-cell:filled:selected:hover {
-    -fx-background-color: -c-line-soft, -c-primary-tint;
+   -fx-background-color: -c-line-soft, -c-primary-tint;
 }
 .table-row-cell:empty {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
 }
 
 
 .table-cell {
-    -fx-padding: 0 12;
-    -fx-alignment: CENTER_LEFT;
-    -fx-border-color: transparent;
-    -fx-text-fill: -c-text;
+   -fx-padding: 0 12;
+   -fx-alignment: CENTER_LEFT;
+   -fx-border-color: transparent;
+   -fx-text-fill: -c-text;
 }
 .table-row-cell:filled:selected .table-cell {
-    -fx-text-fill: -c-text;
+   -fx-text-fill: -c-text;
 }
 .table-cell.col-number {
-    -fx-alignment: CENTER_RIGHT;
+   -fx-alignment: CENTER_RIGHT;
 }
 .table-cell.col-center {
-    -fx-alignment: CENTER;
+   -fx-alignment: CENTER;
 }
 
 
 .table-view .placeholder .label {
-    -fx-text-fill: -c-muted;
-    -fx-font-size: 14px;
+   -fx-text-fill: -c-muted;
+   -fx-font-size: 14px;
 }
 
 
 /* Bảng đặt trong .card: bỏ viền ngoài của bảng để không bị viền đôi */
 .card .table-view {
-    -fx-border-color: transparent;
-    -fx-background-radius: 6;
-    -fx-padding: 0;
+   -fx-border-color: transparent;
+   -fx-background-radius: 6;
+   -fx-padding: 0;
 }
 .card .table-view .column-header-background {
-    -fx-background-radius: 6 6 0 0;
+   -fx-background-radius: 6 6 0 0;
 }
 
 
@@ -737,54 +737,54 @@
   4. THANH CUỘN (mảnh, bo tròn, không có nút mũi tên)
   ========================================================================== */
 .scroll-bar {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
+   -fx-background-color: transparent;
+   -fx-padding: 0;
 }
 .scroll-bar:vertical {
-    -fx-pref-width: 12;
+   -fx-pref-width: 12;
 }
 .scroll-bar:horizontal {
-    -fx-pref-height: 12;
+   -fx-pref-height: 12;
 }
 .scroll-bar > .track,
 .scroll-bar > .track-background {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-border-color: transparent;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-border-color: transparent;
 }
 .scroll-bar > .thumb {
-    -fx-background-color: #A9D3DB;
-    -fx-background-insets: 2;
-    -fx-background-radius: 6;
+   -fx-background-color: #A9D3DB;
+   -fx-background-insets: 2;
+   -fx-background-radius: 6;
 }
 .scroll-bar > .thumb:hover,
 .scroll-bar > .thumb:pressed {
-    -fx-background-color: -c-primary;
+   -fx-background-color: -c-primary;
 }
 .scroll-bar > .increment-button,
 .scroll-bar > .decrement-button {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-border-color: transparent;
-    -fx-padding: 0;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-border-color: transparent;
+   -fx-padding: 0;
 }
 .scroll-bar > .increment-button > .increment-arrow,
 .scroll-bar > .decrement-button > .decrement-arrow {
-    -fx-shape: " ";
-    -fx-padding: 0;
+   -fx-shape: " ";
+   -fx-padding: 0;
 }
 .corner {
-    -fx-background-color: transparent;
+   -fx-background-color: transparent;
 }
 
 
 .scroll-pane {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-padding: 0;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-padding: 0;
 }
 .scroll-pane > .viewport {
-    -fx-background-color: transparent;
+   -fx-background-color: transparent;
 }
 
 
@@ -795,18 +795,18 @@
   BorderPane → left: VBox "sidebar"; center: AnchorPane "content-area"
   ========================================================================== */
 .sidebar {
-    -fx-background-color: linear-gradient(to bottom, #0A3340 0%, #0E5B6A 100%);
+   -fx-background-color: linear-gradient(to bottom, #0A3340 0%, #0E5B6A 100%);
 }
 .sidebar-title {
-    -fx-text-fill: white;
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-    -fx-padding: 24 20 2 20;
+   -fx-text-fill: white;
+   -fx-font-size: 18px;
+   -fx-font-weight: bold;
+   -fx-padding: 24 20 2 20;
 }
 .sidebar-subtitle {
-    -fx-text-fill: -c-ink-text;
-    -fx-font-size: 12px;
-    -fx-padding: 0 20 20 20;
+   -fx-text-fill: -c-ink-text;
+   -fx-font-size: 12px;
+   -fx-padding: 0 20 20 20;
 }
 
 
@@ -814,54 +814,54 @@
   ToggleButton trong ToggleGroup, lúc đó trạng thái :selected tự áp dụng. */
 .button.nav-button,
 .toggle-button.nav-button {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-    -fx-border-color: transparent;
-    -fx-border-width: 0 0 0 4;
-    -fx-border-radius: 0;
-    -fx-text-fill: -c-ink-text;
-    -fx-font-size: 14px;
-    -fx-font-weight: normal;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 11 20 11 16;
-    -fx-max-width: 9999;
-    -fx-cursor: hand;
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-background-radius: 0;
+   -fx-border-color: transparent;
+   -fx-border-width: 0 0 0 4;
+   -fx-border-radius: 0;
+   -fx-text-fill: -c-ink-text;
+   -fx-font-size: 14px;
+   -fx-font-weight: normal;
+   -fx-alignment: CENTER_LEFT;
+   -fx-padding: 11 20 11 16;
+   -fx-max-width: 9999;
+   -fx-cursor: hand;
 }
 .button.nav-button:hover,
 .toggle-button.nav-button:hover {
-    -fx-background-color: -c-ink-hover;
-    -fx-text-fill: white;
+   -fx-background-color: -c-ink-hover;
+   -fx-text-fill: white;
 }
 .button.nav-button:focused,
 .toggle-button.nav-button:focused {
-    -fx-background-color: -c-ink-hover;
-    -fx-border-color: transparent;
+   -fx-background-color: -c-ink-hover;
+   -fx-border-color: transparent;
 }
 .button.nav-button.active,
 .toggle-button.nav-button:selected {
-    -fx-background-color: -c-ink-active;
-    -fx-border-color: transparent transparent transparent -c-accent;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
+   -fx-background-color: -c-ink-active;
+   -fx-border-color: transparent transparent transparent -c-accent;
+   -fx-text-fill: white;
+   -fx-font-weight: bold;
 }
 
 
 .sidebar-user {
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-padding: 0 20 0 20;
+   -fx-text-fill: white;
+   -fx-font-weight: bold;
+   -fx-padding: 0 20 0 20;
 }
 .sidebar-role {
-    -fx-text-fill: -c-ink-text;
-    -fx-font-size: 12px;
-    -fx-padding: 0 20 8 20;
+   -fx-text-fill: -c-ink-text;
+   -fx-font-size: 12px;
+   -fx-padding: 0 20 8 20;
 }
 
 
 #contentArea,
 .content-area {
-    -fx-background-color: -c-bg;
+   -fx-background-color: -c-bg;
 }
 
 
@@ -877,58 +877,58 @@
            └─ TableView
   ========================================================================== */
 .page {
-    -fx-padding: 24;
-    -fx-spacing: 16;
+   -fx-padding: 24;
+   -fx-spacing: 16;
 }
 .page-title {
-    -fx-font-size: 22px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -c-ink;
+   -fx-font-size: 22px;
+   -fx-font-weight: bold;
+   -fx-text-fill: -c-ink;
 }
 .page-subtitle {
-    -fx-text-fill: -c-muted;
+   -fx-text-fill: -c-muted;
 }
 .section-title {
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -c-primary-dark;
+   -fx-font-size: 15px;
+   -fx-font-weight: bold;
+   -fx-text-fill: -c-primary-dark;
 }
 .card {
-    -fx-background-color: -c-surface;
-    -fx-background-radius: 10;
-    -fx-border-color: -c-line;
-    -fx-border-radius: 10;
-    -fx-padding: 16;
-    -fx-spacing: 12;
-    -fx-effect: dropshadow(gaussian, rgba(11, 59, 71, 0.07), 8, 0, 0, 2);
+   -fx-background-color: -c-surface;
+   -fx-background-radius: 10;
+   -fx-border-color: -c-line;
+   -fx-border-radius: 10;
+   -fx-padding: 16;
+   -fx-spacing: 12;
+   -fx-effect: dropshadow(gaussian, rgba(11, 59, 71, 0.07), 8, 0, 0, 2);
 }
 .toolbar {
-    -fx-alignment: CENTER_LEFT;
-    -fx-spacing: 10;
+   -fx-alignment: CENTER_LEFT;
+   -fx-spacing: 10;
 }
 
 
 /* Banner đầu trang (tùy chọn): gắn "page-header" cho HBox chứa tiêu đề + nút.
   Chữ tự chuyển sang trắng; nên dùng btn-accent cho nút "Thêm mới" đặt trong đây. */
 .page-header {
-    -fx-background-color: linear-gradient(to right, #0A6272 0%, #0E7C8F 55%, #17A2B8 100%);
-    -fx-background-radius: 12;
-    -fx-padding: 16 22;
-    -fx-alignment: CENTER_LEFT;
-    -fx-effect: dropshadow(gaussian, rgba(14, 124, 143, 0.30), 12, 0, 0, 4);
+   -fx-background-color: linear-gradient(to right, #0A6272 0%, #0E7C8F 55%, #17A2B8 100%);
+   -fx-background-radius: 12;
+   -fx-padding: 16 22;
+   -fx-alignment: CENTER_LEFT;
+   -fx-effect: dropshadow(gaussian, rgba(14, 124, 143, 0.30), 12, 0, 0, 4);
 }
 .page-header .page-title {
-    -fx-text-fill: white;
+   -fx-text-fill: white;
 }
 .page-header .page-subtitle {
-    -fx-text-fill: rgba(255, 255, 255, 0.88);
+   -fx-text-fill: rgba(255, 255, 255, 0.88);
 }
 
 
 .separator .line {
-    -fx-border-color: -c-line-soft;
-    -fx-border-width: 1 0 0 0;
-    -fx-background-color: transparent;
+   -fx-border-color: -c-line-soft;
+   -fx-border-width: 1 0 0 0;
+   -fx-background-color: transparent;
 }
 
 
@@ -939,11 +939,11 @@
      label.getStyleClass().addAll("badge", "badge-warning");
   ========================================================================== */
 .badge {
-    -fx-padding: 3 11;
-    -fx-background-radius: 20;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
+   -fx-padding: 3 11;
+   -fx-background-radius: 20;
+   -fx-font-size: 12px;
+   -fx-font-weight: bold;
+   -fx-text-fill: white;
 }
 .badge-success { -fx-background-color: -c-success; }
 .badge-warning { -fx-background-color: -c-accent; -fx-text-fill: #3B2300; }
@@ -962,23 +962,23 @@
     stat-blue · stat-green · stat-purple · stat-red · warning (vàng, cho cảnh báo tồn kho thấp)
   ========================================================================== */
 .stat-card {
-    -card-from: #0A6272;
-    -card-to:   #0E7C8F;
-    -card-text: white;
-    -fx-background-color: linear-gradient(to bottom right, -card-from, -card-to);
-    -fx-background-radius: 12;
-    -fx-padding: 16 20;
-    -fx-spacing: 4;
-    -fx-effect: dropshadow(gaussian, rgba(11, 59, 71, 0.20), 10, 0, 0, 4);
+   -card-from: #0A6272;
+   -card-to:   #0E7C8F;
+   -card-text: white;
+   -fx-background-color: linear-gradient(to bottom right, -card-from, -card-to);
+   -fx-background-radius: 12;
+   -fx-padding: 16 20;
+   -fx-spacing: 4;
+   -fx-effect: dropshadow(gaussian, rgba(11, 59, 71, 0.20), 10, 0, 0, 4);
 }
 .stat-label {
-    -fx-text-fill: -card-text;
-    -fx-opacity: 0.90;
+   -fx-text-fill: -card-text;
+   -fx-opacity: 0.90;
 }
 .stat-value {
-    -fx-font-size: 30px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -card-text;
+   -fx-font-size: 30px;
+   -fx-font-weight: bold;
+   -fx-text-fill: -card-text;
 }
 .stat-card.stat-blue   { -card-from: #1D4ED8; -card-to: #2F6FDE; }
 .stat-card.stat-green  { -card-from: #0F6A31; -card-to: #15803D; }
@@ -989,52 +989,52 @@
 
 /* --- Biểu đồ (BarChart / LineChart / PieChart) --- */
 .chart {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
+   -fx-background-color: transparent;
+   -fx-padding: 0;
 }
 .chart-content {
-    -fx-padding: 8;
+   -fx-padding: 8;
 }
 .chart-title {
-    -fx-text-fill: -c-ink;
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
+   -fx-text-fill: -c-ink;
+   -fx-font-size: 15px;
+   -fx-font-weight: bold;
 }
 .chart-plot-background {
-    -fx-background-color: transparent;
+   -fx-background-color: transparent;
 }
 .chart-legend {
-    -fx-background-color: transparent;
-    -fx-padding: 4;
+   -fx-background-color: transparent;
+   -fx-padding: 4;
 }
 .chart-legend-item {
-    -fx-text-fill: -c-muted;
+   -fx-text-fill: -c-muted;
 }
 .axis {
-    -fx-tick-label-fill: -c-muted;
-    -fx-tick-label-font-size: 12px;
+   -fx-tick-label-fill: -c-muted;
+   -fx-tick-label-font-size: 12px;
 }
 .chart-vertical-grid-lines {
-    -fx-stroke: transparent;
+   -fx-stroke: transparent;
 }
 .chart-horizontal-grid-lines {
-    -fx-stroke: -c-line-soft;
+   -fx-stroke: -c-line-soft;
 }
 .chart-vertical-zero-line,
 .chart-horizontal-zero-line {
-    -fx-stroke: -c-line;
+   -fx-stroke: -c-line;
 }
 .bar-chart .chart-bar {
-    -fx-background-color: -fx-bar-fill;
-    -fx-background-insets: 0;
-    -fx-background-radius: 4 4 0 0;
+   -fx-background-color: -fx-bar-fill;
+   -fx-background-insets: 0;
+   -fx-background-radius: 4 4 0 0;
 }
 .chart-series-line {
-    -fx-stroke-width: 2.5px;
+   -fx-stroke-width: 2.5px;
 }
 .chart-pie-label {
-    -fx-fill: -c-text;
-    -fx-font-size: 12px;
+   -fx-fill: -c-text;
+   -fx-font-size: 12px;
 }
 
 
@@ -1087,24 +1087,24 @@
   Root (StackPane/AnchorPane): "login-root"  →  VBox "login-card" đặt giữa
   ========================================================================== */
 .login-root {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #082F3A 0%, #0E6B7B 55%, #17A2B8 100%);
+   -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #082F3A 0%, #0E6B7B 55%, #17A2B8 100%);
 }
 .login-card {
-    /* lớp 1 = dải màu 5px ở mép trên thẻ; lớp 2 = nền trắng */
-    -fx-background-color: linear-gradient(to right, #0E7C8F, #17A2B8, #FFB020), -c-surface;
-    -fx-background-insets: 0, 5 0 0 0;
-    -fx-background-radius: 14, 0 0 14 14;
-    -fx-padding: 36 36 32 36;
-    -fx-spacing: 14;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 30, 0, 0, 10);
+   /* lớp 1 = dải màu 5px ở mép trên thẻ; lớp 2 = nền trắng */
+   -fx-background-color: linear-gradient(to right, #0E7C8F, #17A2B8, #FFB020), -c-surface;
+   -fx-background-insets: 0, 5 0 0 0;
+   -fx-background-radius: 14, 0 0 14 14;
+   -fx-padding: 36 36 32 36;
+   -fx-spacing: 14;
+   -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 30, 0, 0, 10);
 }
 .login-title {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -c-ink;
+   -fx-font-size: 24px;
+   -fx-font-weight: bold;
+   -fx-text-fill: -c-ink;
 }
 .login-subtitle {
-    -fx-text-fill: -c-muted;
+   -fx-text-fill: -c-muted;
 }
 
 
@@ -1116,56 +1116,56 @@
   (xem hướng dẫn) thì phần dưới đây mới có tác dụng.
   ========================================================================== */
 .tooltip {
-    -fx-background-color: -c-ink;
-    -fx-background-radius: 6;
-    -fx-text-fill: white;
-    -fx-font-size: 12px;
-    -fx-padding: 6 10;
+   -fx-background-color: -c-ink;
+   -fx-background-radius: 6;
+   -fx-text-fill: white;
+   -fx-font-size: 12px;
+   -fx-padding: 6 10;
 }
 
 
 .context-menu {
-    -fx-background-color: -c-surface;
-    -fx-background-insets: 0;
-    -fx-background-radius: 8;
-    -fx-border-color: -c-line;
-    -fx-border-radius: 8;
-    -fx-padding: 4;
-    -fx-effect: dropshadow(gaussian, rgba(18, 38, 45, 0.18), 14, 0, 0, 4);
+   -fx-background-color: -c-surface;
+   -fx-background-insets: 0;
+   -fx-background-radius: 8;
+   -fx-border-color: -c-line;
+   -fx-border-radius: 8;
+   -fx-padding: 4;
+   -fx-effect: dropshadow(gaussian, rgba(18, 38, 45, 0.18), 14, 0, 0, 4);
 }
 .context-menu .menu-item {
-    -fx-background-radius: 4;
-    -fx-padding: 7 14;
+   -fx-background-radius: 4;
+   -fx-padding: 7 14;
 }
 .context-menu .menu-item:focused {
-    -fx-background-color: -c-hover;
+   -fx-background-color: -c-hover;
 }
 .context-menu .menu-item:focused > .label {
-    -fx-text-fill: -c-text;
+   -fx-text-fill: -c-text;
 }
 
 
 .dialog-pane {
-    -fx-background-color: -c-surface;
-    -fx-font-size: 13px;
+   -fx-background-color: -c-surface;
+   -fx-font-size: 13px;
 }
 .dialog-pane > .content.label {
-    -fx-padding: 4 24 20 24;
-    -fx-font-size: 14px;
+   -fx-padding: 4 24 20 24;
+   -fx-font-size: 14px;
 }
 .dialog-pane:header > .header-panel {
-    -fx-background-color: -c-surface;
-    -fx-padding: 20 24 4 24;
+   -fx-background-color: -c-surface;
+   -fx-padding: 20 24 4 24;
 }
 .dialog-pane:header > .header-panel > .label {
-    -fx-font-size: 17px;
-    -fx-font-weight: bold;
+   -fx-font-size: 17px;
+   -fx-font-weight: bold;
 }
 .dialog-pane > .button-bar {
-    -fx-background-color: -c-surface;
+   -fx-background-color: -c-surface;
 }
 .dialog-pane > .button-bar > .container {
-    -fx-padding: 12 24 20 24;
-    -fx-spacing: 8;
+   -fx-padding: 12 24 20 24;
+   -fx-spacing: 8;
 }
 

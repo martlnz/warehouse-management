@@ -20,14 +20,14 @@
             <Label text="QUẢN LÝ KHO" style="-fx-font-weight: bold;"/>
             <Separator/>
 
-            <Button text="Dashboard" onAction="#onDashboardMenuClick" maxWidth="Infinity"/>
-            <Button text="Sản phẩm" onAction="#onProductMenuClick" maxWidth="Infinity"/>
-            <Button text="Danh mục" onAction="#onCategoryMenuClick" maxWidth="Infinity"/>
-            <Button text="Nhà cung cấp" onAction="#onSupplierMenuClick" maxWidth="Infinity"/>
-            <Button text="Khách hàng" onAction="#onCustomerMenuClick" maxWidth="Infinity"/>
-            <Button text="Nhập kho" onAction="#onImportMenuClick" maxWidth="Infinity"/>
-            <Button text="Xuất kho" onAction="#onExportMenuClick" maxWidth="Infinity"/>
-            <Button text="Người dùng" onAction="#onUserMenuClick" maxWidth="Infinity"/>
+            <Button fx:id="btnDashboard" text="Dashboard" onAction="#onDashboardMenuClick" maxWidth="Infinity"/>
+            <Button fx:id="btnProduct" text="Sản phẩm" onAction="#onProductMenuClick" maxWidth="Infinity"/>
+            <Button fx:id="btnCategory" text="Danh mục" onAction="#onCategoryMenuClick" maxWidth="Infinity"/>
+            <Button fx:id="btnSupplier" text="Nhà cung cấp" onAction="#onSupplierMenuClick" maxWidth="Infinity"/>
+            <Button fx:id="btnCustomer" text="Khách hàng" onAction="#onCustomerMenuClick" maxWidth="Infinity"/>
+            <Button fx:id="btnImport" text="Nhập kho" onAction="#onImportMenuClick" maxWidth="Infinity"/>
+            <Button fx:id="btnExport" text="Xuất kho" onAction="#onExportMenuClick" maxWidth="Infinity"/>
+            <Button fx:id="btnUser" text="Người dùng" onAction="#onUserMenuClick" maxWidth="Infinity"/>
 
             <Separator/>
             <Button text="Đăng xuất" onAction="#onLogoutClick" maxWidth="Infinity"/>
