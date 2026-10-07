@@ -61,6 +61,7 @@ public class SupplierDAO {
             return false;
         }
     }
+
     public boolean updateSupplier(Supplier supplier) {
         String sql = "UPDATE suppliers SET name = ?, phone = ?, email = ? WHERE id = ?";
 
@@ -94,24 +95,39 @@ public class SupplierDAO {
     }
 
     public boolean deleteSupplier(int id) {
-        String sql = "DELETE FROM suppliers WHERE id = ?";
+        String sqlUpdate = "UPDATE stock_receipts SET supplier_id = NULL WHERE supplier_id = ?";
+        String sqlDelete = "DELETE FROM suppliers WHERE id = ?";
 
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement pstmt1 = conn.prepareStatement(sqlUpdate);
+                 PreparedStatement pstmt2 = conn.prepareStatement(sqlDelete)) {
 
-            pstmt.setInt(1, id);
+                pstmt1.setInt(1, id);
+                pstmt1.executeUpdate();
 
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
+                pstmt2.setInt(1, id);
+                int rowsAffected = pstmt2.executeUpdate();
 
+                conn.commit();
+                return rowsAffected > 0;
+            } catch (SQLException e) {
+                conn.rollback();
+                System.out.println("LỖI SQL: " + e.getMessage());
+                e.printStackTrace();
+                return false;
+            } finally {
+                conn.setAutoCommit(true);
+            }
         } catch (SQLException e) {
             System.out.println("LỖI SQL: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
+
     public String getLastSupplierId() {
-        String sql = "SELECT id FROM suppliers ORDER BY id DESC LIMIT 1";
+        String sql = "SELECT TOP 1 id FROM suppliers ORDER BY id DESC";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {

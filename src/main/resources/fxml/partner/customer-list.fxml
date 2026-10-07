@@ -10,7 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.team.warehouse.warehousemanagementoop.controller.PartnerController">
     <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
     <top>
         <VBox spacing="10">
@@ -18,7 +19,7 @@
             <HBox spacing="8">
                 <TextField fx:id="searchTextField" promptText="Tìm theo tên khách hàng..." prefWidth="220"/>
                 <Button fx:id="searchButton" text="Tìm kiếm"/>
-                <Button fx:id="addButton" text="+ Thêm khách hàng"/>
+                <Button fx:id="addButton" text="+ Thêm khách hàng" onAction="#handleAddCustomer"/>
             </HBox>
         </VBox>
     </top>

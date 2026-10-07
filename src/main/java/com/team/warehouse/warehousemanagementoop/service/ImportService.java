@@ -8,6 +8,7 @@ import com.team.warehouse.warehousemanagementoop.dto.ImportReceiptDTO;
 import com.team.warehouse.warehousemanagementoop.dto.ReceiptDetailDTO;
 import com.team.warehouse.warehousemanagementoop.entity.ImportReceipt;
 import com.team.warehouse.warehousemanagementoop.entity.Product;
+import com.team.warehouse.warehousemanagementoop.entity.ReceiptDetail;
 import com.team.warehouse.warehousemanagementoop.entity.Supplier;
 import com.team.warehouse.warehousemanagementoop.exception.DataAccessException;
 
@@ -18,22 +19,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Luật nghiệp vụ nhập kho: validate phiếu, lưu phiếu và CỘNG tồn kho trong 1 transaction.
- */
 public class ImportService {
 
     private final ImportReceiptDAO importReceiptDAO = new ImportReceiptDAO();
     private final ProductDAO productDAO = new ProductDAO();
     private final SupplierDAO supplierDAO = new SupplierDAO();
 
-    // ===== Dữ liệu cho màn hình danh sách =====
-
     public List<ImportReceipt> findAll() throws DataAccessException {
         return importReceiptDAO.findAll();
     }
 
-    /** Từ khóa rỗng thì trả về toàn bộ danh sách. */
     public List<ImportReceipt> searchBySupplierName(String keyword) throws DataAccessException {
         if (keyword == null || keyword.trim().isEmpty()) {
             return importReceiptDAO.findAll();
@@ -45,13 +40,10 @@ public class ImportService {
         return importReceiptDAO.findById(id);
     }
 
-    // ===== Dữ liệu cho combobox của form =====
-
     public List<Supplier> getAllSuppliers() {
         return supplierDAO.getAllSuppliers();
     }
 
-    /** Chỉ cho chọn sản phẩm đang hoạt động. */
     public List<Product> getActiveProducts() {
         List<Product> result = new ArrayList<>();
         for (Product product : productDAO.findAll()) {
@@ -62,15 +54,6 @@ public class ImportService {
         return result;
     }
 
-    // ===== Tạo phiếu nhập =====
-
-    /**
-     * Tạo phiếu nhập: lưu phiếu + cộng tồn kho từng sản phẩm.
-     * Trả về phiếu vừa tạo (kèm chi tiết).
-     *
-     * @throws IllegalArgumentException dữ liệu phiếu không hợp lệ
-     * @throws DataAccessException      lỗi truy cập cơ sở dữ liệu (đã rollback)
-     */
     public ImportReceipt createImportReceipt(ImportReceiptDTO dto) throws DataAccessException {
         validate(dto);
         long receiptId = saveInTransaction(dto);
@@ -104,12 +87,11 @@ public class ImportService {
         }
     }
 
-    /** Transaction thủ công: lưu phiếu + cộng tồn dùng chung 1 Connection; lỗi thì rollback. */
     private long saveInTransaction(ImportReceiptDTO dto) throws DataAccessException {
         Connection conn = null;
         try {
             conn = DatabaseConfig.getConnection();
-            conn.setAutoCommit(false); // Bắt đầu transaction
+            conn.setAutoCommit(false);
 
             long receiptId = importReceiptDAO.insert(conn, dto);
             for (ReceiptDetailDTO detail : dto.getDetails()) {
@@ -119,7 +101,7 @@ public class ImportService {
                 }
             }
 
-            conn.commit(); // Thành công -> lưu vĩnh viễn
+            conn.commit();
             return receiptId;
 
         } catch (DataAccessException e) {
@@ -128,6 +110,43 @@ public class ImportService {
         } catch (Exception e) {
             rollback(conn);
             throw new DataAccessException("Tạo phiếu nhập thất bại: " + e.getMessage(), e);
+        } finally {
+            closeQuietly(conn);
+        }
+    }
+
+    // Thêm hàm Xóa Phiếu Nhập + Hoàn lại Tồn kho
+    public void deleteImportReceipt(long id) throws DataAccessException {
+        Connection conn = null;
+        try {
+            conn = DatabaseConfig.getConnection();
+            conn.setAutoCommit(false);
+
+            ImportReceipt receipt = importReceiptDAO.findById(conn, id);
+            if (receipt == null) {
+                throw new DataAccessException("Không tìm thấy phiếu nhập có ID " + id);
+            }
+
+            for (ReceiptDetail detail : receipt.getDetails()) {
+                int currentStock = productDAO.getQuantityForUpdate(conn, detail.getProductId());
+                if (currentStock < detail.getQuantity()) {
+                    throw new DataAccessException("Không thể xóa phiếu nhập vì sản phẩm \"" + detail.getProductName() + "\" sẽ bị âm tồn kho.");
+                }
+                boolean updated = productDAO.updateStock(conn, detail.getProductId(), -detail.getQuantity());
+                if (!updated) {
+                    throw new DataAccessException("Không trừ được tồn kho sản phẩm \"" + detail.getProductName() + "\"");
+                }
+            }
+
+            importReceiptDAO.delete(conn, id);
+
+            conn.commit();
+        } catch (DataAccessException e) {
+            rollback(conn);
+            throw e;
+        } catch (Exception e) {
+            rollback(conn);
+            throw new DataAccessException("Xóa phiếu nhập thất bại: " + e.getMessage(), e);
         } finally {
             closeQuietly(conn);
         }

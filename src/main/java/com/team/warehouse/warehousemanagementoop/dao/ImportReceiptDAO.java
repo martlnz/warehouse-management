@@ -18,15 +18,15 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Thao tác trên bảng stock_receipts (lọc receipt_type = 'IMPORT') và receipt_details.
- * Các hàm nhận Connection dùng chung 1 transaction do ImportService quản lý.
- */
 public class ImportReceiptDAO {
 
     private static final String SELECT_RECEIPT =
-            "SELECT r.id, r.created_date, r.note, r.status, "
+            "SELECT r.id, r.receipt_code, r.created_date, r.note, r.status, "
                     + "u.id AS user_id, COALESCE(u.full_name, u.username) AS user_name, "
                     + "s.id AS supplier_id, s.name AS supplier_name "
                     + "FROM stock_receipts r "
@@ -34,19 +34,17 @@ public class ImportReceiptDAO {
                     + "LEFT JOIN suppliers s ON r.supplier_id = s.id "
                     + "WHERE r.receipt_type = 'IMPORT' ";
 
+    private static final String CODE_PREFIX = "NK";
     private static final String ORDER_BY = " ORDER BY r.created_date DESC, r.id DESC";
 
-    /** Danh sách phiếu nhập (mới nhất trước), chưa kèm dòng chi tiết. */
     public List<ImportReceipt> findAll() throws DataAccessException {
         return query(SELECT_RECEIPT + ORDER_BY, null);
     }
 
-    /** Tìm phiếu nhập theo tên nhà cung cấp. */
     public List<ImportReceipt> searchBySupplierName(String keyword) throws DataAccessException {
         return query(SELECT_RECEIPT + "AND s.name LIKE ? " + ORDER_BY, "%" + keyword + "%");
     }
 
-    /** Lấy 1 phiếu nhập kèm các dòng chi tiết (tự mở và đóng kết nối). */
     public ImportReceipt findById(long id) throws DataAccessException {
         try (Connection conn = DatabaseConfig.getConnection()) {
             return findById(conn, id);
@@ -55,7 +53,6 @@ public class ImportReceiptDAO {
         }
     }
 
-    /** Lấy 1 phiếu nhập kèm các dòng chi tiết trên Connection được truyền vào. Trả về null nếu không có. */
     public ImportReceipt findById(Connection conn, long id) throws DataAccessException {
         String sql = SELECT_RECEIPT + "AND r.id = ?";
         try {
@@ -77,22 +74,20 @@ public class ImportReceiptDAO {
         }
     }
 
-    /**
-     * Lưu phiếu nhập + các dòng chi tiết (chưa cộng tồn kho - việc đó do Service gọi ProductDAO).
-     * Trả về mã phiếu vừa tạo.
-     */
     public long insert(Connection conn, ImportReceiptDTO dto) throws DataAccessException {
-        String sqlReceipt = "INSERT INTO stock_receipts (receipt_type, created_by, supplier_id, note, status) "
-                + "VALUES ('IMPORT', ?, ?, ?, ?)";
+        String sqlReceipt = "INSERT INTO stock_receipts (receipt_type, receipt_code, created_by, supplier_id, note, status) "
+                + "VALUES ('IMPORT', ?, ?, ?, ?, ?)";
         String sqlDetail = "INSERT INTO receipt_details (receipt_id, product_id, quantity, unit_price) "
                 + "VALUES (?, ?, ?, ?)";
         try {
+            String code = nextCode(conn);
             long receiptId;
             try (PreparedStatement stmt = conn.prepareStatement(sqlReceipt, Statement.RETURN_GENERATED_KEYS)) {
-                stmt.setLong(1, dto.getCreatedById());
-                stmt.setLong(2, dto.getSupplierId());
-                stmt.setString(3, dto.getNote());
-                stmt.setString(4, StockReceipt.STATUS_COMPLETED);
+                stmt.setString(1, code);
+                stmt.setLong(2, dto.getCreatedById());
+                stmt.setLong(3, dto.getSupplierId());
+                stmt.setString(4, dto.getNote());
+                stmt.setString(5, StockReceipt.STATUS_COMPLETED);
                 stmt.executeUpdate();
                 try (ResultSet keys = stmt.getGeneratedKeys()) {
                     if (!keys.next()) {
@@ -114,6 +109,30 @@ public class ImportReceiptDAO {
             return receiptId;
         } catch (SQLException e) {
             throw new DataAccessException("Lỗi khi lưu phiếu nhập", e);
+        }
+    }
+
+    public void delete(Connection conn, long id) throws SQLException {
+        String sqlDetail = "DELETE FROM receipt_details WHERE receipt_id = ?";
+        String sqlReceipt = "DELETE FROM stock_receipts WHERE id = ?";
+
+        try (PreparedStatement stmtDetail = conn.prepareStatement(sqlDetail)) {
+            stmtDetail.setLong(1, id);
+            stmtDetail.executeUpdate();
+        }
+        try (PreparedStatement stmtReceipt = conn.prepareStatement(sqlReceipt)) {
+            stmtReceipt.setLong(1, id);
+            stmtReceipt.executeUpdate();
+        }
+    }
+
+    private String nextCode(Connection conn) throws SQLException {
+        String sql = "SELECT ISNULL(MAX(TRY_CAST(SUBSTRING(receipt_code, " + (CODE_PREFIX.length() + 1) + ", 20) AS INT)), 0) + 1 "
+                + "FROM stock_receipts WITH (UPDLOCK, HOLDLOCK) WHERE receipt_type = 'IMPORT'";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            rs.next();
+            return String.format("%s%03d", CODE_PREFIX, rs.getInt(1));
         }
     }
 
@@ -162,6 +181,7 @@ public class ImportReceiptDAO {
     private ImportReceipt mapRow(ResultSet rs) throws SQLException {
         ImportReceipt receipt = new ImportReceipt();
         receipt.setId(rs.getLong("id"));
+        receipt.setCode(rs.getString("receipt_code"));
         Timestamp createdDate = rs.getTimestamp("created_date");
         if (createdDate != null) {
             receipt.setCreatedDate(createdDate.toLocalDateTime());
@@ -179,5 +199,30 @@ public class ImportReceiptDAO {
         supplier.setName(rs.getString("supplier_name"));
         receipt.setSupplier(supplier);
         return receipt;
+    }
+
+    public Map<YearMonth, Integer> sumQuantityByMonth(LocalDate startDate) throws DataAccessException {
+        String sql = "SELECT YEAR(r.created_date) AS yr, MONTH(r.created_date) AS mn, SUM(d.quantity) AS total "
+                + "FROM stock_receipts r "
+                + "JOIN receipt_details d ON r.id = d.receipt_id "
+                + "WHERE r.receipt_type = 'IMPORT' AND r.status = 'COMPLETED' AND r.created_date >= ? "
+                + "GROUP BY YEAR(r.created_date), MONTH(r.created_date)";
+
+        Map<YearMonth, Integer> result = new HashMap<>();
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, java.sql.Date.valueOf(startDate));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    YearMonth month = YearMonth.of(rs.getInt("yr"), rs.getInt("mn"));
+                    result.put(month, rs.getInt("total"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Lỗi khi thống kê số lượng nhập theo tháng", e);
+        }
+        return result;
     }
 }

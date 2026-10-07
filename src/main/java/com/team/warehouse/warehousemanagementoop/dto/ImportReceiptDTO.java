@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Dữ liệu form "Tạo phiếu nhập kho": nhà cung cấp + ghi chú + nhiều dòng sản phẩm.
  */

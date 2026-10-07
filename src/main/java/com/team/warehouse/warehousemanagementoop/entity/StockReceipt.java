@@ -14,6 +14,7 @@ public abstract class StockReceipt {
     public static final String STATUS_COMPLETED = "COMPLETED";
 
     private long id;
+    private String code; // mã hiển thị: NK001 (nhập) / XK001 (xuất)
     private LocalDateTime createdDate;
     private User createdBy;
     private String note;
@@ -41,6 +42,19 @@ public abstract class StockReceipt {
 
     public long getId() {
         return id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    /** Mã phiếu để hiển thị: NK001 / XK001. Phiếu cũ chưa có mã thì hiện tạm "#id". */
+    public String getDisplayCode() {
+        return code == null || code.isEmpty() ? "#" + id : code;
     }
 
     public void setId(long id) {

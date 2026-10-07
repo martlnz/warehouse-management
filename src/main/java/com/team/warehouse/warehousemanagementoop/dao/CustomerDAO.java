@@ -1,5 +1,6 @@
 package com.team.warehouse.warehousemanagementoop.dao;
 
+import com.team.warehouse.warehousemanagementoop.config.DatabaseConfig;
 import com.team.warehouse.warehousemanagementoop.entity.Customer;
 
 import java.sql.*;
@@ -10,13 +11,6 @@ import java.util.regex.Pattern;
 
 public class CustomerDAO {
 
-    // Kết nối CSDL SQL Server
-    private Connection getConnection() throws SQLException {
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=warehouse_db;encrypt=false;trustServerCertificate=true;";
-        return DriverManager.getConnection(url, "sa", "Warehouse@123");
-    }
-
-    // Helper map ResultSet sang đối tượng Customer để tránh lặp code
     private Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
         return new Customer(
                 rs.getLong("id"),
@@ -26,11 +20,10 @@ public class CustomerDAO {
         );
     }
 
-    // Lấy tất cả khách hàng
     public List<Customer> getAll() {
         List<Customer> list = new ArrayList<>();
         String sql = "SELECT id, name, phone, email FROM customers";
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) list.add(mapResultSetToCustomer(rs));
@@ -40,8 +33,6 @@ public class CustomerDAO {
         return list;
     }
 
-    // Tìm kiếm khách hàng theo tên
-    // Hàm phụ bỏ dấu tiếng Việt (Ví dụ: "Trần Thị B" -> "tran thi b")
     private String removeAccent(String s) {
         if (s == null) return "";
         String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
@@ -51,6 +42,7 @@ public class CustomerDAO {
                 .replace('đ', 'd')
                 .replace('Đ', 'D');
     }
+
     public List<Customer> searchCustomers(String keyword) {
         List<Customer> list = new ArrayList<>();
         if (keyword == null || keyword.trim().isEmpty()) {
@@ -58,7 +50,7 @@ public class CustomerDAO {
         }
         String cleanKeyword = removeAccent(keyword.trim().toLowerCase());
         String sql = "SELECT * FROM customers";
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
@@ -88,14 +80,13 @@ public class CustomerDAO {
         return list;
     }
 
-    // Thêm khách hàng mới vào CSDL
-    // Trong CustomerDAO.java
     public boolean add(Customer customer) {
-        return insert(customer); // Gọi lại hàm insert của bạn
+        return insert(customer);
     }
+
     public boolean insert(Customer customer) {
         String sql = "INSERT INTO customers (name, phone, email) VALUES (?, ?, ?)";
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, customer.getName());
             pstmt.setString(2, customer.getPhone());
@@ -107,10 +98,9 @@ public class CustomerDAO {
         }
     }
 
-    // Cập nhật thông tin khách hàng
     public boolean update(Customer customer) {
         String sql = "UPDATE customers SET name = ?, phone = ?, email = ? WHERE id = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, customer.getName());
             pstmt.setString(2, customer.getPhone());
@@ -123,23 +113,39 @@ public class CustomerDAO {
         }
     }
 
-    // Xóa khách hàng theo ID
+    // Xử lý set NULL phiếu xuất trước khi xóa khách hàng để tránh lỗi Foreign Key
     public boolean delete(Long id) {
-        String sql = "DELETE FROM customers WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
-            return pstmt.executeUpdate() > 0;
+        String sqlUpdate = "UPDATE stock_receipts SET customer_id = NULL WHERE customer_id = ?";
+        String sqlDelete = "DELETE FROM customers WHERE id = ?";
+        try (Connection conn = DatabaseConfig.getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement pstmt1 = conn.prepareStatement(sqlUpdate);
+                 PreparedStatement pstmt2 = conn.prepareStatement(sqlDelete)) {
+
+                pstmt1.setLong(1, id);
+                pstmt1.executeUpdate();
+
+                pstmt2.setLong(1, id);
+                int rows = pstmt2.executeUpdate();
+
+                conn.commit();
+                return rows > 0;
+            } catch (SQLException e) {
+                conn.rollback();
+                e.printStackTrace();
+                return false;
+            } finally {
+                conn.setAutoCommit(true);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    // Kiểm tra số điện thoại đã tồn tại chưa
     public boolean existsByPhone(String phone) {
         String sql = "SELECT 1 FROM customers WHERE phone = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, phone);
             try (ResultSet rs = pstmt.executeQuery()) {

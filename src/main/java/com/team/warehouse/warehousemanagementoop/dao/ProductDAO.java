@@ -12,12 +12,9 @@ import java.util.List;
 
 public class ProductDAO {
 
-
-    // Trích xuất toàn bộ dữ liệu sản phẩm
-
     public List<Product> findAll() {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products";
+        String sql = "SELECT * FROM products WHERE is_active = 1";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
@@ -31,13 +28,9 @@ public class ProductDAO {
         return products;
     }
 
-
-    //  Tìm kiếm sản phẩm theo tên hoặc mã sản phẩm
-
     public List<Product> search(String keyword) {
         List<Product> products = new ArrayList<>();
-
-        String sql = "SELECT * FROM products WHERE name LIKE ? OR code LIKE ?";
+        String sql = "SELECT * FROM products WHERE is_active = 1 AND (name LIKE ? OR code LIKE ?)";
 
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -55,15 +48,11 @@ public class ProductDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return products;
     }
 
-    //Thêm sản phẩm mới vào cơ sở dữ liệu
-
     public boolean insert(Product product) {
         String sql = "INSERT INTO products (code, name, category_id, quantity, price, is_active) VALUES (?, ?, ?, ?, ?, ?)";
-
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -81,12 +70,8 @@ public class ProductDAO {
         }
     }
 
-
-     // Cập nhật thông tin sản phẩm
-
     public boolean update(Product product) {
         String sql = "UPDATE products SET code = ?, name = ?, category_id = ?, quantity = ?, price = ?, is_active = ? WHERE id = ?";
-
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -105,11 +90,9 @@ public class ProductDAO {
         }
     }
 
-     // Xóa sản phẩm : Xoá cứng
+    // Xóa sản phẩm: Đổi thành xóa mềm (ẩn khỏi hệ thống nhưng không báo lỗi do khóa ngoại của phiếu)
     public boolean delete(long id) {
-
-        String sql = "DELETE FROM products WHERE id = ?";
-
+        String sql = "UPDATE products SET is_active = 0 WHERE id = ?";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -120,9 +103,6 @@ public class ProductDAO {
             return false;
         }
     }
-
-
-    //Hàm dùng chung: Map dữ liệu từ ResultSet sang đối tượng Product
 
     private Product mapResultSetToEntity(ResultSet rs) throws SQLException {
         Product product = new Product();
@@ -136,16 +116,11 @@ public class ProductDAO {
         return product;
     }
 
-    // Lấy mã sản phẩm được thêm vào cuối cùng (mới nhất) trong CSDL
-
     public String getLastProductCode() {
-        // Lấy sản phẩm có id lớn nhất (mới thêm nhất)
         String sql = "SELECT TOP 1 code FROM products ORDER BY id DESC";
-
-        try (Connection conn = com.team.warehouse.warehousemanagementoop.config.DatabaseConfig.getConnection();
+        try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
-
             if (rs.next()) {
                 return rs.getString("code");
             }
@@ -154,21 +129,23 @@ public class ProductDAO {
         }
         return null;
     }
-     // Cập nhật số lượng tồn kho của sản phẩm (Dùng cho Nhập/Xuất kho)
-    public boolean updateStock(long productId, int quantityChange) {
-        // Lệnh SQL cộng thẳng số lượng thay đổi vào số lượng hiện tại
+
+    public boolean updateStock(Connection conn, long productId, int quantityChange) throws SQLException {
         String sql = "UPDATE products SET quantity = quantity + ? WHERE id = ?";
-
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, quantityChange);
             pstmt.setLong(2, productId);
-
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+        }
+    }
+
+    public int getQuantityForUpdate(Connection conn, long productId) throws SQLException {
+        String sql = "SELECT quantity FROM products WITH (UPDLOCK, ROWLOCK) WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, productId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next() ? rs.getInt("quantity") : -1;
+            }
         }
     }
 }
