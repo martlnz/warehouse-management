@@ -11,6 +11,7 @@ import com.team.warehouse.warehousemanagementoop.exception.DataAccessException;
 import com.team.warehouse.warehousemanagementoop.service.ImportService;
 import com.team.warehouse.warehousemanagementoop.util.AlertHelper;
 import com.team.warehouse.warehousemanagementoop.util.SessionManager;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,7 +28,6 @@ import javafx.geometry.Insets;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -100,10 +100,10 @@ public class ImportReceiptController implements Initializable {
 
             {
                 viewButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 5 10;");
-                viewButton.setMinWidth(55);
+                viewButton.setMinWidth(60);
 
                 deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 5 10;");
-                deleteButton.setMinWidth(55);
+                deleteButton.setMinWidth(50);
 
                 container.setAlignment(Pos.CENTER);
 
@@ -123,6 +123,7 @@ public class ImportReceiptController implements Initializable {
         searchTextField.textProperty().addListener((obs, oldVal, newVal) -> {
             loadReceipts(newVal);
         });
+
         searchButton.setOnAction(e -> loadReceipts(searchTextField.getText()));
 
         addButton.setOnAction(e -> onAddButtonClick());
@@ -165,66 +166,23 @@ public class ImportReceiptController implements Initializable {
                 return;
             }
 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/import/import-detail-dialog.fxml"));
+            DialogPane dialogPane = new DialogPane();
+            dialogPane.setContent(loader.load());
+            ImportDetailController controller = loader.getController();
+            controller.setReceiptData(receipt);
+
             Dialog<Void> dialog = new Dialog<>();
             dialog.setTitle("Chi tiết phiếu nhập");
             dialog.setHeaderText("Mã phiếu: " + receipt.getDisplayCode());
-
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-            grid.setPadding(new Insets(10));
-
-            grid.add(new Label("Nhà cung cấp:"), 0, 0);
-            Label lblSupplier = new Label(receipt.getPartnerName());
-            lblSupplier.setStyle("-fx-font-weight: bold;");
-            grid.add(lblSupplier, 1, 0);
-
-            grid.add(new Label("Ghi chú:"), 0, 1);
-            grid.add(new Label(receipt.getNote() == null ? "" : receipt.getNote()), 1, 1);
-
-            TableView<ReceiptDetail> table = new TableView<>();
-
-            TableColumn<ReceiptDetail, String> colName = new TableColumn<>("Sản phẩm");
-            colName.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getProductName()));
-            colName.setPrefWidth(220);
-
-            TableColumn<ReceiptDetail, String> colQty = new TableColumn<>("SL");
-            colQty.setCellValueFactory(c -> new SimpleStringProperty(String.valueOf(c.getValue().getQuantity())));
-            colQty.setPrefWidth(60);
-
-            TableColumn<ReceiptDetail, String> colPrice = new TableColumn<>("Đơn giá");
-            colPrice.setCellValueFactory(c -> new SimpleStringProperty(formatMoney(c.getValue().getUnitPrice())));
-            colPrice.setPrefWidth(120);
-
-            TableColumn<ReceiptDetail, String> colSubtotal = new TableColumn<>("Thành tiền");
-            colSubtotal.setCellValueFactory(c -> new SimpleStringProperty(formatMoney(c.getValue().getSubtotal())));
-            colSubtotal.setPrefWidth(140);
-
-            table.getColumns().addAll(colName, colQty, colPrice, colSubtotal);
-            table.setItems(FXCollections.observableArrayList(receipt.getDetails()));
-            table.setPrefHeight(250);
-
-            Label totalLabel = new Label("Tổng tiền: " + formatMoney(receipt.getTotalAmount()));
-            totalLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #b12a2a;");
-
-            HBox totalBox = new HBox(totalLabel);
-            totalBox.setAlignment(Pos.CENTER_RIGHT);
-            totalBox.setPadding(new Insets(10, 0, 0, 0));
-
-            VBox vbox = new VBox(15, grid, table, totalBox);
-            vbox.setPadding(new Insets(10));
-
-            dialog.getDialogPane().setContent(vbox);
-            dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-
-            // Xử lý cẩn thận nếu file app.css có tồn tại hoặc không
-            URL cssUrl = getClass().getResource("/css/app.css");
-            if (cssUrl != null) {
-                dialog.getDialogPane().getStylesheets().add(cssUrl.toExternalForm());
-            }
+            dialog.setDialogPane(dialogPane);
+            dialogPane.getButtonTypes().add(ButtonType.CLOSE);
 
             dialog.showAndWait();
 
+        } catch (IOException e) {
+            AlertHelper.showError("Lỗi", "Không thể nạp giao diện chi tiết phiếu nhập!");
+            e.printStackTrace();
         } catch (DataAccessException e) {
             showDataError("Lỗi tải dữ liệu", e);
         }

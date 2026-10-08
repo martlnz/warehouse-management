@@ -2,10 +2,6 @@ package com.team.warehouse.warehousemanagementoop.entity;
 
 import java.math.BigDecimal;
 
-/**
- * Một dòng sản phẩm của phiếu. Ánh xạ bảng receipt_details.
- * productName chỉ để hiển thị (lấy qua JOIN với bảng products).
- */
 public class ReceiptDetail {
 
     private long id;
@@ -28,10 +24,6 @@ public class ReceiptDetail {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getReceiptId() {
-        return receiptId;
     }
 
     public void setReceiptId(long receiptId) {

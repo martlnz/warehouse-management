@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="15.0" prefWidth="550.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.team.warehouse.warehousemanagementoop.controller.ImportDetailController">
+    <padding>
+        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+    </padding>
+
+    <!-- Thông tin chung -->
+    <GridPane hgap="10.0" vgap="10.0">
+        <padding>
+            <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+        </padding>
+        <children>
+            <Label text="Nhà cung cấp:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Label fx:id="lblSupplier" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label text="Ghi chú:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label fx:id="lblNote" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        </children>
+    </GridPane>
+
+    <!-- Bảng sản phẩm -->
+    <TableView fx:id="detailTable" prefHeight="250.0">
+        <columns>
+            <TableColumn fx:id="colName" text="Sản phẩm" prefWidth="220.0" />
+            <TableColumn fx:id="colQty" text="SL" prefWidth="60.0" />
+            <TableColumn fx:id="colPrice" text="Đơn giá" prefWidth="120.0" />
+            <TableColumn fx:id="colSubtotal" text="Thành tiền" prefWidth="140.0" />
+        </columns>
+    </TableView>
+
+    <!-- Tổng tiền -->
+    <HBox alignment="CENTER_RIGHT">
+        <padding>
+            <Insets top="10.0" />
+        </padding>
+        <children>
+            <Label fx:id="lblTotal" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #b12a2a;" />
+        </children>
+    </HBox>
+</VBox>

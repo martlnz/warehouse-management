@@ -25,10 +25,6 @@ public class ImportService {
     private final ProductDAO productDAO = new ProductDAO();
     private final SupplierDAO supplierDAO = new SupplierDAO();
 
-    public List<ImportReceipt> findAll() throws DataAccessException {
-        return importReceiptDAO.findAll();
-    }
-
     public List<ImportReceipt> searchBySupplierName(String keyword) throws DataAccessException {
         if (keyword == null || keyword.trim().isEmpty()) {
             return importReceiptDAO.findAll();
@@ -115,7 +111,6 @@ public class ImportService {
         }
     }
 
-    // Thêm hàm Xóa Phiếu Nhập + Hoàn lại Tồn kho
     public void deleteImportReceipt(long id) throws DataAccessException {
         Connection conn = null;
         try {
