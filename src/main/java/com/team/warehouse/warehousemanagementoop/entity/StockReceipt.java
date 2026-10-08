@@ -5,10 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Phiếu kho (abstract) - cha chung của ImportReceipt và ExportReceipt.
- * Ánh xạ bảng stock_receipts (cột receipt_type phân biệt IMPORT / EXPORT).
- */
 public abstract class StockReceipt {
 
     public static final String STATUS_COMPLETED = "COMPLETED";
@@ -21,10 +17,8 @@ public abstract class StockReceipt {
     private String status;
     private List<ReceiptDetail> details = new ArrayList<>();
 
-    /** Tên đối tác của phiếu: phiếu nhập -> nhà cung cấp, phiếu xuất -> khách hàng (đa hình). */
     public abstract String getPartnerName();
 
-    /** Tổng tiền của phiếu = tổng thành tiền các dòng chi tiết (dùng chung cho cả 2 loại phiếu). */
     public BigDecimal getTotalAmount() {
         BigDecimal total = BigDecimal.ZERO;
         for (ReceiptDetail detail : details) {
@@ -52,7 +46,6 @@ public abstract class StockReceipt {
         this.code = code;
     }
 
-    /** Mã phiếu để hiển thị: NK001 / XK001. Phiếu cũ chưa có mã thì hiện tạm "#id". */
     public String getDisplayCode() {
         return code == null || code.isEmpty() ? "#" + id : code;
     }

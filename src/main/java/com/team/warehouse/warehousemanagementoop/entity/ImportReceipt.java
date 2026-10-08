@@ -1,8 +1,5 @@
 package com.team.warehouse.warehousemanagementoop.entity;
 
-/**
- * Phiếu nhập kho: thêm nhà cung cấp so với StockReceipt.
- */
 public class ImportReceipt extends StockReceipt {
 
     private Supplier supplier;
@@ -13,10 +10,6 @@ public class ImportReceipt extends StockReceipt {
             return "";
         }
         return supplier.getName();
-    }
-
-    public Supplier getSupplier() {
-        return supplier;
     }
 
     public void setSupplier(Supplier supplier) {

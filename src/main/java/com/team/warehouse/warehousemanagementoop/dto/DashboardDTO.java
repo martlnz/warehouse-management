@@ -4,9 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Toàn bộ dữ liệu của màn hình Dashboard: 3 ô thống kê + dữ liệu biểu đồ nhập/xuất theo tháng.
- */
 public class DashboardDTO {
 
     private int totalProducts;

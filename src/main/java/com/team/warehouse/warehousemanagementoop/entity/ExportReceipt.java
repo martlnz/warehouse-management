@@ -15,10 +15,6 @@ public class ExportReceipt extends StockReceipt {
         return customer.getName();
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }

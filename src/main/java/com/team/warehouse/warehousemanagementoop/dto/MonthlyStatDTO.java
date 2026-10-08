@@ -1,11 +1,8 @@
 package com.team.warehouse.warehousemanagementoop.dto;
 
-/**
- * Tổng số lượng hàng nhập và xuất của 1 tháng - mỗi đối tượng là 1 cột trên biểu đồ Dashboard.
- */
 public class MonthlyStatDTO {
 
-    private final String monthLabel; // VD: "10/2026"
+    private final String monthLabel;
     private final int importQuantity;
     private final int exportQuantity;
 

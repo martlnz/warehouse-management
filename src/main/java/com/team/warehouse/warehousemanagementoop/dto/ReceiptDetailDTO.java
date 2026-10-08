@@ -2,10 +2,6 @@ package com.team.warehouse.warehousemanagementoop.dto;
 
 import java.math.BigDecimal;
 
-/**
- * Một dòng sản phẩm người dùng thêm vào form phiếu nhập / phiếu xuất.
- * Dùng chung cho cả 2 loại phiếu.
- */
 public class ReceiptDetailDTO {
 
     private long productId;
